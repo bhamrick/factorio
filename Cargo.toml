@@ -1,0 +1,9 @@
+[package]
+name = "factorio"
+version = "0.1.0"
+authors = ["Brian Hamrick <brian.c.hamrick@gmail.com>"]
+
+[dependencies]
+
+[dependencies.nom]
+version = "^3.1"

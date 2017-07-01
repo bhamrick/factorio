@@ -1,0 +1,49 @@
+# Prototypical coal to solid fuel layout
+
+Inputs
+    Coal: coal_in
+    Water: water_in
+Outputs
+    Solid fuel: solid_out
+
+Boiler
+    Inputs
+        Water: water_in
+        Fuel: solid_out
+    Outputs
+        Steam: steam
+
+Oil Refinery
+    Coal liquefaction
+    Inputs
+        Coal: coal_in
+        Heavy oil: heavy_loop
+        Steam: steam
+    Outputs
+        Heavy oil: heavy_loop
+        Light oil: light_oil
+        Petroleum: petroleum
+
+Chemical Plant
+    Heavy oil cracking
+    Modules
+        3x Productivity 1
+    Inputs
+        Heavy oil: heavy_loop
+        Water: water_in
+    Outputs
+        Light oil: light_oil
+
+Chemical Plant
+    Solid fuel (Light oil)
+    Inputs
+        Light oil: light_oil
+    Outputs
+        Solid fuel: solid_out
+
+Chemical Plant
+    Solid fuel (Petroleum)
+    Inputs
+        Petroleum: petroleum
+    Outputs
+        Solid fuel: solid_out
