@@ -12,7 +12,7 @@ use std::vec::Vec;
 
 use nom::*;
 
-#[derive(Debug, Copy, Clone, PartialEq, Eq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 enum Resource {
     Coal,
     Water,
@@ -32,6 +32,35 @@ lazy_static! {
         (Resource::LightOil, "Light oil"),
         (Resource::Petroleum, "Petroleum"),
         (Resource::Steam, "Steam"),
+    ];
+
+    static ref PROTO_BUILDINGS : Vec<ProtoBuilding<'static>> = vec![
+        ProtoBuilding {
+            name: "Boiler",
+            recipes: vec![
+                "Burning solid fuel",
+            ],
+            energy_consumption: 0.0,
+            crafting_speed: 1.0,
+        },
+        ProtoBuilding {
+            name: "Oil Refinery",
+            recipes: vec![
+                "Coal liquefaction",
+            ],
+            energy_consumption: 420.0,
+            crafting_speed: 1.0,
+        },
+        ProtoBuilding {
+            name: "Chemical Plant",
+            recipes: vec![
+                "Heavy oil cracking",
+                "Solid fuel (Light oil)",
+                "Solid fuel (Petroleum)",
+            ],
+            energy_consumption: 210.0,
+            crafting_speed: 1.25,
+        },
     ];
 
     static ref PROTO_RECIPES : Vec<ProtoRecipe<'static>> = vec![
@@ -119,7 +148,28 @@ struct Building<'a> {
     name: &'a str,
     recipe: Recipe<'a>,
     energy_consumption: f32,
+    crafting_speed: f32,
     index: usize,
+}
+
+#[derive(Debug, Clone)]
+struct ProtoBuilding<'a> {
+    name: &'a str,
+    recipes: Vec<&'a str>,
+    energy_consumption: f32,
+    crafting_speed: f32,
+}
+
+impl<'a> ProtoBuilding<'a> {
+    fn from_name(name: &'a str) -> Option<ProtoBuilding<'a>> {
+        for ref proto in PROTO_BUILDINGS.iter() {
+            // TODO: Make this case insensitive
+            if proto.name == name {
+                return Some((*proto).clone());
+            }
+        }
+        None
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -136,6 +186,18 @@ struct ProtoRecipe<'a> {
     inputs: Vec<(Resource, f32)>,
     outputs: Vec<(Resource, f32)>,
     time: f32,
+}
+
+impl<'a> ProtoRecipe<'a> {
+    fn from_name(name: &'a str) -> Option<ProtoRecipe<'a>> {
+        for ref proto in PROTO_RECIPES.iter() {
+            // TODO: Make this case insensitive
+            if proto.name == name {
+                return Some((*proto).clone());
+            }
+        }
+        None
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -204,6 +266,7 @@ impl<'a> Design<'a> {
         let mut design = Design::new();
         for datum in data {
             if datum.value == b"Inputs" {
+                // Read input lines
                 for input_datum in datum.children {
                     let resource_type_str = std::str::from_utf8(input_datum.value)?;
                     let resource_type = Resource::from_str(resource_type_str)?;
@@ -217,6 +280,7 @@ impl<'a> Design<'a> {
                     }
                 }
             } else if datum.value == b"Outputs" {
+                // Read output lines
                 for output_datum in datum.children {
                     let resource_type_str = std::str::from_utf8(output_datum.value)?;
                     let resource_type = Resource::from_str(resource_type_str)?;
@@ -229,6 +293,92 @@ impl<'a> Design<'a> {
                         design.output_lines.insert(resource_line.name);
                     }
                 }
+            } else {
+                // Read a building description
+                let building_name = std::str::from_utf8(datum.value)?;
+                let proto_building = ProtoBuilding::from_name(building_name)
+                    .ok_or(InputError::new("Unknown building"))?;
+                if datum.children.is_empty() {
+                    return Err(InputError::new("Found building with no recipe"));
+                }
+                let recipe_name = std::str::from_utf8(datum.children[0].value)?;
+                let proto_recipe = ProtoRecipe::from_name(recipe_name)
+                    .ok_or(InputError::new("Unknown recipe"))?;
+                let mut required_inputs : HashMap<Resource, f32> = proto_recipe.inputs.iter().cloned().collect();
+                let mut required_outputs : HashMap<Resource, f32> = proto_recipe.outputs.iter().cloned().collect();
+                let mut line_inputs = Vec::new();
+                let mut line_outputs = Vec::new();
+                for property_datum in datum.children[1..].iter() {
+                    if property_datum.value == b"Inputs" {
+                        for input_datum in property_datum.children.iter() {
+                            let resource_type_str = std::str::from_utf8(input_datum.value)?;
+                            let resource_type = Resource::from_str(resource_type_str)?;
+
+                            if input_datum.children.len() != 1 {
+                                return Err(InputError::new("Only single line per input is supported."));
+                            }
+                            let line_name = std::str::from_utf8(input_datum.children[0].value)?;
+
+                            let resource_line = design.get_line(resource_type, line_name)?;
+
+                            match required_inputs.remove(&resource_type) {
+                                Some(qty) => {
+                                    line_inputs.push((resource_line, qty));
+                                },
+                                None => {
+                                    return Err(InputError::new("Invalid recipe input"));
+                                },
+                            }
+                        }
+                    } else if property_datum.value == b"Outputs" {
+                        for output_datum in property_datum.children.iter() {
+                            let resource_type_str = std::str::from_utf8(output_datum.value)?;
+                            let resource_type = Resource::from_str(resource_type_str)?;
+
+                            if output_datum.children.len() != 1 {
+                                return Err(InputError::new("Only single line per output is supported."));
+                            }
+                            let line_name = std::str::from_utf8(output_datum.children[0].value)?;
+
+                            let resource_line = design.get_line(resource_type, line_name)?;
+
+                            match required_outputs.remove(&resource_type) {
+                                Some(qty) => {
+                                    line_outputs.push((resource_line, qty));
+                                },
+                                None => {
+                                    return Err(InputError::new("Invalid recipe output"));
+                                },
+                            }
+                        }
+                    }
+                }
+
+                if !required_inputs.is_empty() {
+                    return Err(InputError::new("Not all inputs are filled"));
+                }
+                if !required_outputs.is_empty() {
+                    return Err(InputError::new("Not all outputs are filled"));
+                }
+
+                let recipe = Recipe {
+                    name: proto_recipe.name,
+                    inputs: line_inputs,
+                    outputs: line_outputs,
+                    time: proto_recipe.time,
+                };
+
+                let building_index = design.next_index;
+                design.next_index += 1;
+
+                let building = Building {
+                    name: proto_building.name,
+                    recipe: recipe,
+                    energy_consumption: proto_building.energy_consumption,
+                    crafting_speed: proto_building.crafting_speed,
+                    index: building_index,
+                };
+                design.buildings.push(building);
             }
         }
         Ok(design)
