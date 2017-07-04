@@ -152,6 +152,24 @@ struct Building<'a> {
     index: usize,
 }
 
+impl<'a> Building<'a> {
+    fn analysis_coefficients(&self) -> HashMap<usize, f32> {
+        let mut coefficients = HashMap::new();
+        // TODO: Support modules
+        let recipe_multiplier = self.crafting_speed / self.recipe.time;
+        // Inputs have positive coefficients and outputs have negative coefficients.
+        // This is so that the sign of the resource line is positive for outputs and
+        // negative for inputs (since we set the diagonal coefficient to be 1).
+        for &(ref line, qty) in self.recipe.inputs.iter() {
+            coefficients.insert(line.index, -recipe_multiplier*qty);
+        }
+        for &(ref line, qty) in self.recipe.outputs.iter() {
+            coefficients.insert(line.index, recipe_multiplier*qty);
+        }
+        coefficients
+    }
+}
+
 #[derive(Debug, Clone)]
 struct ProtoBuilding<'a> {
     name: &'a str,
@@ -214,6 +232,19 @@ impl From<std::str::Utf8Error> for InputError {
 impl InputError {
     fn new(msg: &str) -> InputError {
         InputError {
+            message: String::from_str(msg).unwrap(),
+        }
+    }
+}
+
+#[derive(Debug, Clone)]
+struct AnalyzeError {
+    message: String,
+}
+
+impl AnalyzeError {
+    fn new(msg: &str) -> AnalyzeError {
+        AnalyzeError {
             message: String::from_str(msg).unwrap(),
         }
     }
@@ -383,6 +414,58 @@ impl<'a> Design<'a> {
         }
         Ok(design)
     }
+
+    fn analyze(&self) -> Result<Vec<f32>, AnalyzeError> {
+        // If the specified design is fully specified, then there will be one
+        // set of nonzero rates (up to scalar factors) that determines how fast
+        // each of the parts is working. The vector returned in that case will
+        // have the following values:
+        //
+        // For each building, how many copies of that building are operating
+        // For each resource line, how much of that resource is netted per second
+        //
+        // The location of these values is defined by the `index` attribute of
+        // each building and resource line.
+        //
+        // To compute these, we build up a system of linear equations. There are
+        // two types of equations:
+        //
+        // 1) Each resource line variable is the sum of all contributions of attached
+        //    buildings (positive contribution for outputs, negative for inputs).
+        // 2) For each resource line that is not an input or output, that resource line
+        //    must net 0.
+        let mut io_equations : HashMap<usize, Vec<f32>> = HashMap::new();
+        let num_variables = self.next_index;
+        for line in self.resource_lines.values() {
+            let mut equation = Vec::new();
+            equation.resize(num_variables, 0.0);
+            equation[line.index] = 1.0;
+            io_equations.insert(line.index, equation);
+        }
+        for building in self.buildings.iter() {
+            let coefficients = building.analysis_coefficients();
+            for (&line_index, &line_coeff) in coefficients.iter() {
+                if let Some(eq) = io_equations.get_mut(&line_index) {
+                    eq[building.index] = line_coeff;
+                }
+            }
+        }
+        let mut matrix : Vec<Vec<f32>> = Vec::new();
+        for eq in io_equations.values() {
+            matrix.push(eq.clone());
+        }
+        // Add equations to force all non-input/output lines to 0
+        for line in self.resource_lines.values() {
+            if !self.input_lines.contains(line.name) && !self.output_lines.contains(line.name) {
+                let mut equation = Vec::new();
+                equation.resize(num_variables, 0.0);
+                equation[line.index] = 1.0;
+                matrix.push(equation);
+            }
+        }
+        println!("{:?}", matrix);
+        Err(AnalyzeError::new("Analysis not implemented yet"))
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -510,4 +593,7 @@ fn main() {
     let parsed_data = Data::from_bytes(&clean_contents);
     let design = Design::from_data(parsed_data.unwrap());
     println!("{:?}", design);
+
+    let analysis = design.unwrap().analyze();
+    println!("{:?}", analysis);
 }
