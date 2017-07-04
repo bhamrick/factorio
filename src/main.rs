@@ -1,6 +1,7 @@
 #[macro_use]
 extern crate lazy_static;
 extern crate nom;
+extern crate rulinalg;
 
 use std::fs::File;
 use std::collections::{HashMap, HashSet};
@@ -11,6 +12,9 @@ use std::io::prelude::*;
 use std::vec::Vec;
 
 use nom::*;
+
+use rulinalg::matrix::Matrix;
+use rulinalg::vector::Vector;
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 enum Resource {
@@ -161,10 +165,26 @@ impl<'a> Building<'a> {
         // This is so that the sign of the resource line is positive for outputs and
         // negative for inputs (since we set the diagonal coefficient to be 1).
         for &(ref line, qty) in self.recipe.inputs.iter() {
-            coefficients.insert(line.index, -recipe_multiplier*qty);
+            match coefficients.entry(line.index) {
+                Entry::Occupied(mut ent) => {
+                    let mut coeff : &mut f32 = ent.get_mut();
+                    *coeff += recipe_multiplier * qty;
+                },
+                Entry::Vacant(ent) => {
+                    ent.insert(recipe_multiplier * qty);
+                },
+            }
         }
         for &(ref line, qty) in self.recipe.outputs.iter() {
-            coefficients.insert(line.index, recipe_multiplier*qty);
+            match coefficients.entry(line.index) {
+                Entry::Occupied(mut ent) => {
+                    let mut coeff : &mut f32 = ent.get_mut();
+                    *coeff += -recipe_multiplier * qty;
+                },
+                Entry::Vacant(ent) => {
+                    ent.insert(-recipe_multiplier * qty);
+                },
+            }
         }
         coefficients
     }
@@ -250,12 +270,20 @@ impl AnalyzeError {
     }
 }
 
+impl From<rulinalg::error::Error> for AnalyzeError {
+    fn from(_ : rulinalg::error::Error) -> AnalyzeError {
+        AnalyzeError::new("Error solving system")
+    }
+}
+
 #[derive(Debug, Clone)]
 struct Design<'a> {
     resource_lines: HashMap<&'a str, ResourceLine<'a>>,
     buildings: Vec<Building<'a>>,
     input_lines: HashSet<&'a str>,
     output_lines: HashSet<&'a str>,
+    normalized_var: Option<usize>,
+    normalized_value: f32,
     next_index: usize,
 }
 
@@ -266,6 +294,8 @@ impl<'a> Design<'a> {
             buildings: Vec::new(),
             input_lines: HashSet::new(),
             output_lines: HashSet::new(),
+            normalized_var: None,
+            normalized_value: 1.0,
             next_index: 0,
         }
     }
@@ -322,6 +352,9 @@ impl<'a> Design<'a> {
                         let output_line_name = std::str::from_utf8(output_line.value)?;
                         let resource_line = design.get_line(resource_type, output_line_name)?;
                         design.output_lines.insert(resource_line.name);
+                        if design.normalized_var == None {
+                            design.normalized_var = Some(resource_line.index);
+                        }
                     }
                 }
             } else {
@@ -450,21 +483,78 @@ impl<'a> Design<'a> {
                 }
             }
         }
-        let mut matrix : Vec<Vec<f32>> = Vec::new();
+
+        let mut matrix_data : Vec<f32> = Vec::new();
+        let mut rhs_data : Vec<f32> = Vec::new();
+
+        // Main balance equations
         for eq in io_equations.values() {
-            matrix.push(eq.clone());
+            matrix_data.extend(eq.iter().cloned());
+            rhs_data.push(0.0);
         }
-        // Add equations to force all non-input/output lines to 0
+        // Equations to force all non-input/output lines to 0
         for line in self.resource_lines.values() {
             if !self.input_lines.contains(line.name) && !self.output_lines.contains(line.name) {
                 let mut equation = Vec::new();
                 equation.resize(num_variables, 0.0);
                 equation[line.index] = 1.0;
-                matrix.push(equation);
+
+                matrix_data.extend(equation.iter().cloned());
+                rhs_data.push(0.0);
             }
         }
-        println!("{:?}", matrix);
-        Err(AnalyzeError::new("Analysis not implemented yet"))
+        // Equation to normalize the result
+        let mut norm_eq = Vec::new();
+        let norm_var_index = self.normalized_var.ok_or(AnalyzeError::new("No normalized variable set"))?;
+        norm_eq.resize(num_variables, 0.0);
+        norm_eq[norm_var_index] = 1.0;
+        matrix_data.extend(norm_eq.iter().cloned());
+        rhs_data.push(self.normalized_value);
+
+        let matrix = Matrix::new(rhs_data.len(), num_variables, matrix_data);
+        let rhs = Vector::new(rhs_data);
+        let result = matrix.solve(rhs)?;
+
+        Ok(result.into_vec())
+    }
+
+    fn print_results(&self, analysis : Vec<f32>) {
+        println!("Inputs:");
+        for input_name in self.input_lines.iter() {
+            let input_line = self.resource_lines.get(input_name).unwrap();
+            println!("    {}: {} per sec", input_line.name, -analysis[input_line.index]);
+        }
+        println!("");
+        println!("Outputs:");
+        for output_name in self.output_lines.iter() {
+            let output_line = self.resource_lines.get(output_name).unwrap();
+            println!("    {}: {} per sec", output_line.name, analysis[output_line.index]);
+        }
+        let mut total_energy = 0.0;
+        for building in self.buildings.iter() {
+            println!("");
+            println!("{}", building.name);
+            println!("    {}", building.recipe.name);
+            let building_count = analysis[building.index];
+            println!("    Count: {}", building_count);
+            let building_energy = building.energy_consumption * building_count;
+            println!("    Energy cost: {} kW", building_energy);
+            total_energy += building_energy;
+
+            println!("    Inputs:");
+            for &(ref input_line, qty) in building.recipe.inputs.iter() {
+                let input_rate = qty * building_count * building.crafting_speed / building.recipe.time;
+                println!("        {}: {} per sec", input_line.name, input_rate);
+            }
+
+            println!("    Outputs:");
+            for &(ref output_line, qty) in building.recipe.outputs.iter() {
+                let output_rate = qty * building_count * building.crafting_speed / building.recipe.time;
+                println!("        {}: {} per sec", output_line.name, output_rate);
+            }
+        }
+        println!("");
+        println!("Total energy cost: {} kW", total_energy);
     }
 }
 
@@ -590,10 +680,10 @@ fn main() {
 
     let clean_contents = clean(contents);
 
-    let parsed_data = Data::from_bytes(&clean_contents);
-    let design = Design::from_data(parsed_data.unwrap());
-    println!("{:?}", design);
+    let parsed_data = Data::from_bytes(&clean_contents).unwrap();
+    let design = Design::from_data(parsed_data).unwrap();
 
-    let analysis = design.unwrap().analyze();
-    println!("{:?}", analysis);
+    let analysis = design.analyze().unwrap();
+
+    design.print_results(analysis);
 }
