@@ -7,9 +7,10 @@ Outputs
     Solid fuel: solid_out
 
 Boiler
+    Burning solid fuel
     Inputs
         Water: water_in
-        Fuel: solid_out
+        Solid fuel: solid_out
     Outputs
         Steam: steam
 
@@ -26,8 +27,8 @@ Oil Refinery
 
 Chemical Plant
     Heavy oil cracking
-    Modules
-        3x Productivity 1
+    #Modules
+    #    3x Productivity 1
     Inputs
         Heavy oil: heavy_loop
         Water: water_in
