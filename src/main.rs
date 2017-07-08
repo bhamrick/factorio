@@ -474,31 +474,27 @@ impl<'a> Design<'a> {
     fn from_data(data: Vec<Data<'a>>) -> Result<Design<'a>, InputError> {
         let mut design = Design::new();
         for datum in data {
-            if datum.value == b"Inputs" {
+            if datum.value == "Inputs" {
                 // Read input lines
                 for input_datum in datum.children {
-                    let resource_type_str = std::str::from_utf8(input_datum.value)?;
-                    let resource_type = Resource::from_str(resource_type_str)?;
+                    let resource_type = Resource::from_str(input_datum.value)?;
                     for input_line in input_datum.children {
                         if !input_line.children.is_empty() {
                             return Err(InputError::new("Unexpected child of input line name"));
                         }
-                        let input_line_name = std::str::from_utf8(input_line.value)?;
-                        let resource_line = design.get_line(resource_type, input_line_name)?;
+                        let resource_line = design.get_line(resource_type, input_line.value)?;
                         design.input_lines.insert(resource_line.name);
                     }
                 }
-            } else if datum.value == b"Outputs" {
+            } else if datum.value == "Outputs" {
                 // Read output lines
                 for output_datum in datum.children {
-                    let resource_type_str = std::str::from_utf8(output_datum.value)?;
-                    let resource_type = Resource::from_str(resource_type_str)?;
+                    let resource_type = Resource::from_str(output_datum.value)?;
                     for output_line in output_datum.children {
                         if !output_line.children.is_empty() {
                             return Err(InputError::new("Unexpected child of output line name"));
                         }
-                        let output_line_name = std::str::from_utf8(output_line.value)?;
-                        let resource_line = design.get_line(resource_type, output_line_name)?;
+                        let resource_line = design.get_line(resource_type, output_line.value)?;
                         design.output_lines.insert(resource_line.name);
                         if design.normalized_var == None {
                             design.normalized_var = Some(resource_line.index);
@@ -507,13 +503,12 @@ impl<'a> Design<'a> {
                 }
             } else {
                 // Read a building description
-                let building_name = std::str::from_utf8(datum.value)?;
-                let proto_building = ProtoBuilding::from_name(building_name)
+                let proto_building = ProtoBuilding::from_name(datum.value)
                     .ok_or(InputError::new("Unknown building"))?;
                 if datum.children.is_empty() {
                     return Err(InputError::new("Found building with no recipe"));
                 }
-                let recipe_name = std::str::from_utf8(datum.children[0].value)?;
+                let recipe_name = datum.children[0].value;
                 let proto_recipe = ProtoRecipe::from_name(recipe_name)
                     .ok_or(InputError::new("Unknown recipe"))?;
                 let mut required_inputs : HashMap<Resource, f32> = proto_recipe.inputs.iter().cloned().collect();
@@ -522,15 +517,14 @@ impl<'a> Design<'a> {
                 let mut line_outputs = Vec::new();
                 let mut modules = Vec::new();
                 for property_datum in datum.children[1..].iter() {
-                    if property_datum.value == b"Inputs" {
+                    if property_datum.value == "Inputs" {
                         for input_datum in property_datum.children.iter() {
-                            let resource_type_str = std::str::from_utf8(input_datum.value)?;
-                            let resource_type = Resource::from_str(resource_type_str)?;
+                            let resource_type = Resource::from_str(input_datum.value)?;
 
                             if input_datum.children.len() != 1 {
                                 return Err(InputError::new("Only single line per input is supported."));
                             }
-                            let line_name = std::str::from_utf8(input_datum.children[0].value)?;
+                            let line_name = input_datum.children[0].value;
 
                             let resource_line = design.get_line(resource_type, line_name)?;
 
@@ -543,15 +537,14 @@ impl<'a> Design<'a> {
                                 },
                             }
                         }
-                    } else if property_datum.value == b"Outputs" {
+                    } else if property_datum.value == "Outputs" {
                         for output_datum in property_datum.children.iter() {
-                            let resource_type_str = std::str::from_utf8(output_datum.value)?;
-                            let resource_type = Resource::from_str(resource_type_str)?;
+                            let resource_type = Resource::from_str(output_datum.value)?;
 
                             if output_datum.children.len() != 1 {
                                 return Err(InputError::new("Only single line per output is supported."));
                             }
-                            let line_name = std::str::from_utf8(output_datum.children[0].value)?;
+                            let line_name = output_datum.children[0].value;
 
                             let resource_line = design.get_line(resource_type, line_name)?;
 
@@ -564,17 +557,15 @@ impl<'a> Design<'a> {
                                 },
                             }
                         }
-                    } else if property_datum.value == b"Modules" {
+                    } else if property_datum.value == "Modules" {
                         for module_datum in property_datum.children.iter() {
-                            let module_name = std::str::from_utf8(module_datum.value)?;
-                            let module_type = Module::from_name(module_name)?;
+                            let module_type = Module::from_name(module_datum.value)?;
 
                             let module_count : i16;
                             if module_datum.children.len() == 0 {
                                 module_count = 1;
                             } else if module_datum.children.len() == 1 {
-                                let module_count_str = std::str::from_utf8(module_datum.children[0].value)?;
-                                module_count = match module_count_str.parse() {
+                                module_count = match module_datum.children[0].value.parse() {
                                     Ok(n) => n,
                                     Err(_) => return Err(InputError::new("Invalid module count")),
                                 };
@@ -735,12 +726,12 @@ impl<'a> Design<'a> {
 
 #[derive(Debug, Clone)]
 struct Data<'a> {
-    value: &'a [u8],
+    value: &'a str,
     children: Vec<Data<'a>>,
 }
 
 impl<'a> Data<'a> {
-    fn leaf(value: &'a [u8]) -> Data<'a> {
+    fn leaf(value: &'a str) -> Data<'a> {
         return Data {
             value: value,
             children: Vec::new(),
@@ -808,7 +799,7 @@ fn deeper_indentation<'a, 'b>(input: &'a [u8], indentation: &'b [u8]) -> IResult
 fn inline_node<'a, 'b>(input: &'a [u8], indentation: &'b [u8]) -> IResult<&'a [u8], Data<'a>> {
     do_parse!(input, 
         call!(match_indentation, indentation) >>
-        value: is_not!(":\n") >>
+        value: map_res!(is_not!(":\n"), std::str::from_utf8) >>
         tag!(":") >>
         is_a!(" \t") >>
         children: separated_list!(
@@ -817,7 +808,7 @@ fn inline_node<'a, 'b>(input: &'a [u8], indentation: &'b [u8]) -> IResult<&'a [u
                     opt!(is_a!(" \t")) >>
                     (())
                 ),
-                map!(is_not!(",\n"), Data::leaf)
+                map!(map_res!(is_not!(",\n"), std::str::from_utf8), Data::leaf)
             ) >>
         tag!("\n") >>
         (Data {
@@ -830,7 +821,7 @@ fn inline_node<'a, 'b>(input: &'a [u8], indentation: &'b [u8]) -> IResult<&'a [u
 fn nested_node<'a, 'b>(input: &'a [u8], indentation: &'b [u8]) -> IResult<&'a [u8], Data<'a>> {
     do_parse!(input,
         call!(match_indentation, indentation) >>
-        value: is_not!(":\n") >>
+        value: map_res!(is_not!(":\n"), std::str::from_utf8) >>
         tag!("\n") >>
         children: opt!(do_parse!(
             new_indentation: peek!(call!(deeper_indentation, indentation)) >>
