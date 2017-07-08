@@ -3,9 +3,9 @@ extern crate lazy_static;
 extern crate nom;
 extern crate rulinalg;
 
-use std::fs::File;
 use std::collections::{HashMap, HashSet};
 use std::collections::hash_map::Entry;
+use std::fs::File;
 use std::str;
 use std::str::FromStr;
 use std::io::prelude::*;
@@ -126,6 +126,30 @@ lazy_static! {
             time: 1.0,
         },
     ];
+
+    static ref MODULE_NAMES : Vec<(Module, &'static str)> = vec![
+        (Module::Productivity1, "Productivity 1"),
+        (Module::Productivity1, "Productivity1"),
+        (Module::Productivity1, "Productivity"),
+        (Module::Productivity2, "Productivity 2"),
+        (Module::Productivity2, "Productivity2"),
+        (Module::Productivity3, "Productivity 3"),
+        (Module::Productivity3, "Productivity3"),
+        (Module::Speed1, "Speed 1"),
+        (Module::Speed1, "Speed1"),
+        (Module::Speed1, "Speed"),
+        (Module::Speed2, "Speed 2"),
+        (Module::Speed2, "Speed2"),
+        (Module::Speed3, "Speed 3"),
+        (Module::Speed3, "Speed3"),
+        (Module::Efficiency1, "Efficiency 1"),
+        (Module::Efficiency1, "Efficiency1"),
+        (Module::Efficiency1, "Efficiency"),
+        (Module::Efficiency2, "Efficiency 2"),
+        (Module::Efficiency2, "Efficiency2"),
+        (Module::Efficiency3, "Efficiency 3"),
+        (Module::Efficiency3, "Efficiency3"),
+    ];
 }
 
 impl Resource {
@@ -153,40 +177,164 @@ struct Building<'a> {
     recipe: Recipe<'a>,
     energy_consumption: f32,
     crafting_speed: f32,
+    modules: Vec<(Module, i16)>,
     index: usize,
 }
 
 impl<'a> Building<'a> {
     fn analysis_coefficients(&self) -> HashMap<usize, f32> {
         let mut coefficients = HashMap::new();
-        // TODO: Support modules
-        let recipe_multiplier = self.crafting_speed / self.recipe.time;
+        let modified_recipe = self.modified_recipe();
         // Inputs have positive coefficients and outputs have negative coefficients.
         // This is so that the sign of the resource line is positive for outputs and
         // negative for inputs (since we set the diagonal coefficient to be 1).
-        for &(ref line, qty) in self.recipe.inputs.iter() {
+        for &(ref line, qty) in modified_recipe.inputs.iter() {
             match coefficients.entry(line.index) {
                 Entry::Occupied(mut ent) => {
                     let mut coeff : &mut f32 = ent.get_mut();
-                    *coeff += recipe_multiplier * qty;
+                    *coeff += qty / modified_recipe.time;
                 },
                 Entry::Vacant(ent) => {
-                    ent.insert(recipe_multiplier * qty);
+                    ent.insert(qty / modified_recipe.time);
                 },
             }
         }
-        for &(ref line, qty) in self.recipe.outputs.iter() {
+        for &(ref line, qty) in modified_recipe.outputs.iter() {
             match coefficients.entry(line.index) {
                 Entry::Occupied(mut ent) => {
                     let mut coeff : &mut f32 = ent.get_mut();
-                    *coeff += -recipe_multiplier * qty;
+                    *coeff += -qty / modified_recipe.time;
                 },
                 Entry::Vacant(ent) => {
-                    ent.insert(-recipe_multiplier * qty);
+                    ent.insert(-qty / modified_recipe.time);
                 },
             }
         }
         coefficients
+    }
+
+    fn modified_recipe(&self) -> Recipe<'a> {
+        let modifiers = Modifiers::from_modules(&self.modules);
+        let mut modified_outputs = Vec::new();
+        for &(ref line, amount) in self.recipe.outputs.iter() {
+            modified_outputs.push((line.clone(), amount * (1.0 + modifiers.productivity)));
+        }
+        let modified_crafting_speed = self.crafting_speed + modifiers.speed;
+        let modified_time = self.recipe.time / modified_crafting_speed;
+        Recipe {
+            name: self.recipe.name,
+            inputs: self.recipe.inputs.clone(),
+            outputs: modified_outputs,
+            time: modified_time,
+        }
+    }
+
+    fn modified_energy_consumption(&self) -> f32 {
+        let mut modifiers = Modifiers::from_modules(&self.modules);
+        if modifiers.energy < 0.2 {
+            modifiers.energy = 0.2;
+        }
+        self.energy_consumption * modifiers.energy
+    }
+}
+
+#[derive(Debug, Clone, Copy)]
+enum Module {
+    Productivity1,
+    Productivity2,
+    Productivity3,
+    Speed1,
+    Speed2,
+    Speed3,
+    Efficiency1,
+    Efficiency2,
+    Efficiency3,
+}
+
+impl Module {
+    fn display_name(&self) -> &'static str {
+        match *self {
+            Module::Productivity1 => "Productivity 1",
+            Module::Productivity2 => "Productivity 2",
+            Module::Productivity3 => "Productivity 3",
+            Module::Speed1 => "Speed 1",
+            Module::Speed2 => "Speed 2",
+            Module::Speed3 => "Speed 3",
+            Module::Efficiency1 => "Efficiency 1",
+            Module::Efficiency2 => "Efficiency 2",
+            Module::Efficiency3 => "Efficiency 3",
+        }
+    }
+
+    fn from_name(name: &str) -> Result<Module, InputError> {
+        for &(module_type, module_name) in MODULE_NAMES.iter() {
+            if name == module_name {
+                return Ok(module_type)
+            }
+        }
+        Err(InputError::new("Unknown module"))
+    }
+}
+
+#[derive(Debug, Clone)]
+struct Modifiers {
+    speed: f32,
+    productivity: f32,
+    energy: f32,
+}
+
+impl Modifiers {
+    fn new() -> Modifiers {
+        Modifiers {
+            speed: 0.0,
+            productivity: 0.0,
+            energy: 1.0,
+        }
+    }
+
+    fn from_modules<I>(modules: &[(Module, I)]) -> Modifiers where I: Copy + Into<f32> {
+        let mut modifiers = Modifiers::new();
+        for &(module, count) in modules {
+            match module {
+                Module::Productivity1 => {
+                    modifiers.speed += (-0.15) * count.into();
+                    modifiers.productivity += 0.04 * count.into();
+                    modifiers.energy += 0.40 * count.into();
+                },
+                Module::Productivity2 => {
+                    modifiers.speed += (-0.15) * count.into();
+                    modifiers.productivity += 0.06 * count.into();
+                    modifiers.energy += 0.60 * count.into();
+                },
+                Module::Productivity3 => {
+                    modifiers.speed += (-0.15) * count.into();
+                    modifiers.productivity += 0.10 * count.into();
+                    modifiers.energy += 0.80 * count.into();
+                },
+                Module::Speed1 => {
+                    modifiers.speed += 0.20 * count.into();
+                    modifiers.energy += 0.50 * count.into();
+                },
+                Module::Speed2 => {
+                    modifiers.speed += 0.30 * count.into();
+                    modifiers.energy += 0.60 * count.into();
+                },
+                Module::Speed3 => {
+                    modifiers.speed += 0.50 * count.into();
+                    modifiers.energy += 0.70 * count.into();
+                },
+                Module::Efficiency1 => {
+                    modifiers.energy += (-0.30) * count.into();
+                },
+                Module::Efficiency2 => {
+                    modifiers.energy += (-0.40) * count.into();
+                },
+                Module::Efficiency3 => {
+                    modifiers.energy += (-0.50) * count.into();
+                },
+            }
+        }
+        modifiers
     }
 }
 
@@ -372,6 +520,7 @@ impl<'a> Design<'a> {
                 let mut required_outputs : HashMap<Resource, f32> = proto_recipe.outputs.iter().cloned().collect();
                 let mut line_inputs = Vec::new();
                 let mut line_outputs = Vec::new();
+                let mut modules = Vec::new();
                 for property_datum in datum.children[1..].iter() {
                     if property_datum.value == b"Inputs" {
                         for input_datum in property_datum.children.iter() {
@@ -415,6 +564,26 @@ impl<'a> Design<'a> {
                                 },
                             }
                         }
+                    } else if property_datum.value == b"Modules" {
+                        for module_datum in property_datum.children.iter() {
+                            let module_name = std::str::from_utf8(module_datum.value)?;
+                            let module_type = Module::from_name(module_name)?;
+
+                            let module_count : i16;
+                            if module_datum.children.len() == 0 {
+                                module_count = 1;
+                            } else if module_datum.children.len() == 1 {
+                                let module_count_str = std::str::from_utf8(module_datum.children[0].value)?;
+                                module_count = match module_count_str.parse() {
+                                    Ok(n) => n,
+                                    Err(_) => return Err(InputError::new("Invalid module count")),
+                                };
+                            } else {
+                                return Err(InputError::new("Invalid module count"));
+                            }
+
+                            modules.push((module_type, module_count));
+                        }
                     }
                 }
 
@@ -440,6 +609,7 @@ impl<'a> Design<'a> {
                     recipe: recipe,
                     energy_consumption: proto_building.energy_consumption,
                     crafting_speed: proto_building.crafting_speed,
+                    modules: modules,
                     index: building_index,
                 };
                 design.buildings.push(building);
@@ -535,21 +705,26 @@ impl<'a> Design<'a> {
             println!("");
             println!("{}", building.name);
             println!("    {}", building.recipe.name);
+            println!("    Modules:");
+            for &(module_type, module_count) in building.modules.iter() {
+                println!("        {}: {}", module_type.display_name(), module_count);
+            }
             let building_count = analysis[building.index];
             println!("    Count: {}", building_count);
-            let building_energy = building.energy_consumption * building_count;
+            let building_energy = building.modified_energy_consumption() * building_count;
             println!("    Energy cost: {} kW", building_energy);
             total_energy += building_energy;
 
+            let modified_recipe = building.modified_recipe();
             println!("    Inputs:");
-            for &(ref input_line, qty) in building.recipe.inputs.iter() {
-                let input_rate = qty * building_count * building.crafting_speed / building.recipe.time;
+            for &(ref input_line, qty) in modified_recipe.inputs.iter() {
+                let input_rate = qty * building_count / modified_recipe.time;
                 println!("        {}: {} per sec", input_line.name, input_rate);
             }
 
             println!("    Outputs:");
-            for &(ref output_line, qty) in building.recipe.outputs.iter() {
-                let output_rate = qty * building_count * building.crafting_speed / building.recipe.time;
+            for &(ref output_line, qty) in modified_recipe.outputs.iter() {
+                let output_rate = qty * building_count / modified_recipe.time;
                 println!("        {}: {} per sec", output_line.name, output_rate);
             }
         }
