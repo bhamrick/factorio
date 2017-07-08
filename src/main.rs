@@ -18,27 +18,529 @@ use rulinalg::vector::Vector;
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq, Hash)]
 enum Resource {
+    // Base Resources
+    RawWood,
     Coal,
+    IronOre,
+    CopperOre,
+    UraniumOre,
+    Stone,
+    RawFish,
     Water,
-    SolidFuel,
-    HeavyOil,
-    LightOil,
+    CrudeOil,
+
+    // Intermediate Products
+    Wood,
+    IronPlate,
+    CopperPlate,
+    SteelPlate,
+    StoneBrick,
+    Sulfur,
+    PlasticBar,
+    Battery,
+    IronStick,
+    IronGearWheel,
+    CopperCable,
+    ElectronicCircuit,
+    AdvancedCircuit,
+    ProcessingUnit,
+    EngineUnit,
+    ElectricEngineUnit,
+    FlyingRobotFrame,
+    SciencePack1,
+    SciencePack2,
+    SciencePack3,
+    MilitarySciencePack,
+    ProductionSciencePack,
+    HighTechSciencePack,
+    SpaceSciencePack,
+    EmptyBarrel,
+    Explosives,
+
+    // Chemicals
     Petroleum,
+    LightOil,
+    HeavyOil,
+    SulfuricAcid,
+    Lubricant,
     Steam,
+
+    // Player Equipment
+    IronAxe,
+    SteelAxe,
+
+    // Weapons
+    Pistol,
+    SubmachineGun,
+    Shotgun,
+    CombatShotgun,
+    RocketLauncher,
+    Flamethrower,
+    LandMine,
+    BasicGrenade,
+    ClusterGrenade,
+    DefenderCapsule,
+    PoisonCapsule,
+    SlowdownCapsule,
+    DistractorCapsule,
+    DestroyerCapsule,
+    DischargeDefenseRemote,
+    Car,
+    Tank,
+ 
+    // Ammo
+    RegularMagazine,
+    PiercingRoundsMagazine,
+    ShotgunShells,
+    PiercingShotgunShells,
+    Rocket,
+    ExplosiveRocket,
+    FlamethrowerAmmo,
+    CannonShells,
+    ExplosiveCannonShells,
+
+    // Armor
+    IronArmor,
+    HeavyArmor,
+    BasicModularArmor,
+    PowerArmor,
+    PowerArmor2,
+
+    // Armor components
+    NightVision,
+    BatteryMk1,
+    BatteryMk2,
+    EnergyShield,
+    EnergyShield2,
+    PortableSolarPanel,
+    PortableFusionReactor,
+    PersonalLaserDefense,
+    DischargeDefense,
+    Exoskeleton,
+    PersonalRoboport,
+
+    // Special
+    LogisticRobot,
+    ConstructionRobot,
+    Roboport,
+    SolidFuel,
+
+    // Placeable items
+    TransportBelt,
+    UndergroundBelt,
+    Splitter,
+    FastTransportBelt,
+    FastUndergroundBelt,
+    FastSplitter,
+    ExpressTransportBelt,
+    ExpressUndergroundBelt,
+    ExpressSplitter,
+
+    // Inserters
+    BurnerInserter,
+    Inserter,
+    LongHandedInserter,
+    FastInserter,
+    FilterInserter,
+    StackInserter,
+    StackFilterInserter,
+
+    // Storage
+    WoodenChest,
+    IronChest,
+    SteelChest,
+    ActiveProviderChest,
+    PassiveProviderChest,
+    StorageChest,
+    RequesterChest,
+
+    // Defensive Structures
+    Wall,
+    Gate,
+    GunTurret,
+    LaserTurret,
+    FlamethrowerTurret,
+
+    // Machines
+    BurnerMiningDrill,
+    ElectricMiningDrill,
+    StoneFurnace,
+    SteelFurnace,
+    ElectricFurnace,
+    AssemblingMachine1,
+    AssemblingMachine2,
+    AssemblingMachine3,
+    Lab,
+    Beacon,
+    Radar,
+
+    // Modules
+    EfficiencyModule1,
+    EfficiencyModule2,
+    EfficiencyModule3,
+    ProductivityModule1,
+    ProductivityModule2,
+    ProductivityModule3,
+    SpeedModule1,
+    SpeedModule2,
+    SpeedModule3,
+
+    // Electric Network
+    SmallElectricPole,
+    MediumElectricPole,
+    BigElectricPole,
+    Substation,
+    Boiler,
+    SteamEngine,
+    SolarPanel,
+    Accumulator,
+
+    // Railway Network
+    StraightRail,
+    TrainStop,
+    RailSignal,
+    RailChainSignal,
+    DieselLocomotive,
+    CargoWagon,
+    FluidWagon,
+
+    // Liquid Network
+    Pipe,
+    PipeToGround,
+    OffshorePump,
+    StorageTank,
+    OilRefinery,
+    ChemicalPlant,
+    Pumpjack,
+    SmallPump,
+
+    // Circuit Network
+    Lamp,
+    RedWire,
+    GreenWire,
+    ArithmeticCombinator,
+    DeciderCombinator,
+    ConstantCombinator,
+    PowerSwitch,
+    ProgrammableSpeaker,
+
+    // Rocket Components
+    RocketSilo,
+    LowDensityStructure,
+    RocketControlUnit,
+    RocketFuel,
+    RocketPart,
+    Satellite,
 }
 
 lazy_static! {
     static ref RESOURCE_NAMES : Vec<(Resource, &'static str)> = vec![
+        // Base Resources
+        (Resource::RawWood, "Raw Wood"),
         (Resource::Coal, "Coal"),
+        (Resource::IronOre, "Iron Ore"),
+        (Resource::CopperOre, "Copper Ore"),
+        (Resource::UraniumOre, "Uranium Ore"),
+        (Resource::Stone, "Stone"),
+        (Resource::RawFish, "Raw Fish"),
         (Resource::Water, "Water"),
-        (Resource::SolidFuel, "Solid fuel"),
-        (Resource::HeavyOil, "Heavy oil"),
-        (Resource::LightOil, "Light oil"),
+        (Resource::CrudeOil, "Crude Oil"),
+
+        // Intermediate Products
+        (Resource::Wood, "Wood"),
+        (Resource::IronPlate, "Iron Plate"),
+        (Resource::IronPlate, "Iron"),
+        (Resource::CopperPlate, "Copper Plate"),
+        (Resource::CopperPlate, "Copper"),
+        (Resource::SteelPlate, "Steel Plate"),
+        (Resource::SteelPlate, "Steel"),
+        (Resource::StoneBrick, "Stone Brick"),
+        (Resource::StoneBrick, "Brick"),
+        (Resource::Sulfur, "Sulfur"),
+        (Resource::PlasticBar, "Plastic Bar"),
+        (Resource::PlasticBar, "Plastic"),
+        (Resource::Battery, "Battery"),
+        (Resource::IronStick, "Iron Stick"),
+        (Resource::IronGearWheel, "Iron Gear Wheel"),
+        (Resource::IronGearWheel, "Iron Gear"),
+        (Resource::IronGearWheel, "Gear"),
+        (Resource::IronGearWheel, "Gear Wheel"),
+        (Resource::CopperCable, "Copper Cable"),
+        (Resource::CopperCable, "Copper Wire"),
+        (Resource::ElectronicCircuit, "Electronic Circuit"),
+        (Resource::ElectronicCircuit, "Green Circuit"),
+        (Resource::AdvancedCircuit, "Advanced Circuit"),
+        (Resource::AdvancedCircuit, "Red Circuit"),
+        (Resource::ProcessingUnit, "Processing Unit"),
+        (Resource::ProcessingUnit, "Blue Unit"),
+        (Resource::EngineUnit, "Engine Unit"),
+        (Resource::EngineUnit, "Engine"),
+        (Resource::ElectricEngineUnit, "Electric Engine Unit"),
+        (Resource::ElectricEngineUnit, "Electric Engine"),
+        (Resource::FlyingRobotFrame, "Flying Robot Frame"),
+        (Resource::FlyingRobotFrame, "Robot Frame"),
+        (Resource::SciencePack1, "Science Pack 1"),
+        (Resource::SciencePack1, "Red Science"),
+        (Resource::SciencePack2, "Science Pack 2"),
+        (Resource::SciencePack2, "Green Science"),
+        (Resource::SciencePack3, "Science Pack 3"),
+        (Resource::SciencePack3, "Blue Science"),
+        (Resource::MilitarySciencePack, "Military Science Pack"),
+        (Resource::MilitarySciencePack, "Military Science"),
+        (Resource::MilitarySciencePack, "Grey Science"),
+        (Resource::MilitarySciencePack, "Gray Science"),
+        (Resource::ProductionSciencePack, "Production Science Pack"),
+        (Resource::ProductionSciencePack, "Production Science"),
+        (Resource::ProductionSciencePack, "Purple Science"),
+        (Resource::HighTechSciencePack, "High Tech Science Pack"),
+        (Resource::HighTechSciencePack, "High Tech Science"),
+        (Resource::HighTechSciencePack, "Yellow Science"),
+        (Resource::SpaceSciencePack, "Space Science Pack"),
+        (Resource::SpaceSciencePack, "Space Science"),
+        (Resource::SpaceSciencePack, "White Science"),
+        (Resource::EmptyBarrel, "Empty Barrel"),
+        (Resource::Explosives, "Explosives"),
+
+        // Chemicals
         (Resource::Petroleum, "Petroleum"),
+        (Resource::LightOil, "Light oil"),
+        (Resource::HeavyOil, "Heavy oil"),
+        (Resource::SulfuricAcid, "Sulfuric Acid"),
+        (Resource::Lubricant, "Lubricant"),
         (Resource::Steam, "Steam"),
+
+        // Player Equipment
+        (Resource::IronAxe, "Iron Axe"),
+        (Resource::SteelAxe, "Steel Axe"),
+
+        // Weapons
+        (Resource::Pistol, "Pistol"),
+        (Resource::SubmachineGun, "Submachine Gun"),
+        (Resource::Shotgun, "Shotgun"),
+        (Resource::CombatShotgun, "Combat Shotgun"),
+        (Resource::RocketLauncher, "Rocket Launcher"),
+        (Resource::Flamethrower, "Flamethrower"),
+        (Resource::LandMine, "Land Mine"),
+        (Resource::BasicGrenade, "Basic Grenade"),
+        (Resource::BasicGrenade, "Grenade"),
+        (Resource::ClusterGrenade, "Cluster Grenade"),
+        (Resource::DefenderCapsule, "Defender Capsule"),
+        (Resource::PoisonCapsule, "Poison Capsule"),
+        (Resource::SlowdownCapsule, "Slowdown Capsule"),
+        (Resource::DistractorCapsule, "Distractor Capsule"),
+        (Resource::DestroyerCapsule, "Destroyer Capsule"),
+        (Resource::DischargeDefenseRemote, "Discharge Defense Remote"),
+        (Resource::Car, "Car"),
+        (Resource::Tank, "Tank"),
+
+        // Ammo
+        (Resource::RegularMagazine, "Regular Magazine"),
+        (Resource::RegularMagazine, "Magazine"),
+        (Resource::RegularMagazine, "Ammo"),
+        (Resource::PiercingRoundsMagazine, "Piercing Rounds Magazine"),
+        (Resource::PiercingRoundsMagazine, "Piercing Magazine"),
+        (Resource::PiercingRoundsMagazine, "Piercing Ammo"),
+        (Resource::ShotgunShells, "Shotgun Shells"),
+        (Resource::PiercingShotgunShells, "Piercing Shotgun Shells"),
+        (Resource::Rocket, "Rocket"),
+        (Resource::ExplosiveRocket, "Explosive Rocket"),
+        (Resource::FlamethrowerAmmo, "Flamethrower Ammo"),
+        (Resource::CannonShells, "Cannon Shells"),
+        (Resource::ExplosiveCannonShells, "Explosive Cannon Shells"),
+
+        // Armor
+        (Resource::IronArmor, "Iron Armor"),
+        (Resource::HeavyArmor, "Heavy Armor"),
+        (Resource::BasicModularArmor, "Basic Modular Armor"),
+        (Resource::BasicModularArmor, "Modular Armor"),
+        (Resource::PowerArmor, "Power Armor"),
+        (Resource::PowerArmor2, "Power Armor Mk 2"),
+        (Resource::PowerArmor2, "Power Armor Mk2"),
+        (Resource::PowerArmor2, "Power Armor 2"),
+
+        // Armor Components
+        (Resource::NightVision, "Night Vision"),
+        (Resource::BatteryMk1, "Battery Mk1"),
+        (Resource::BatteryMk2, "Battery Mk2"),
+        (Resource::EnergyShield, "Energy Shield"),
+        (Resource::EnergyShield2, "Energy Shield Mk2"),
+        (Resource::EnergyShield2, "Energy Shield 2"),
+        (Resource::PortableSolarPanel, "Portable Solar Panel"),
+        (Resource::PortableFusionReactor, "Portable Fusion Reactor"),
+        (Resource::PersonalLaserDefense, "Personal Laser Defense"),
+        (Resource::DischargeDefense, "Discharge Defense"),
+        (Resource::Exoskeleton, "Basic Exoskeleton Equipment"),
+        (Resource::Exoskeleton, "Exoskeleton"),
+        (Resource::PersonalRoboport, "Personal Roboport"),
+
+        // Special
+        (Resource::LogisticRobot, "Logistic Robot"),
+        (Resource::ConstructionRobot, "Construction Robot"),
+        (Resource::Roboport, "Roboport"),
+        (Resource::SolidFuel, "Solid fuel"),
+
+        // Placeable items
+        (Resource::TransportBelt, "Transport Belt"),
+        (Resource::TransportBelt, "Yellow Belt"),
+        (Resource::UndergroundBelt, "Underground Belt"),
+        (Resource::UndergroundBelt, "Underground"),
+        (Resource::UndergroundBelt, "Yellow Underground Belt"),
+        (Resource::UndergroundBelt, "Yellow Underground"),
+        (Resource::Splitter, "Splitter"),
+        (Resource::Splitter, "Yellow Splitter"),
+        (Resource::FastTransportBelt, "Fast Transport Belt"),
+        (Resource::FastTransportBelt, "Red Belt"),
+        (Resource::FastUndergroundBelt, "Fast Underground Belt"),
+        (Resource::FastUndergroundBelt, "Fast Underground"),
+        (Resource::FastUndergroundBelt, "Red Underground Belt"),
+        (Resource::FastUndergroundBelt, "Red Underground"),
+        (Resource::FastSplitter, "Fast Splitter"),
+        (Resource::FastSplitter, "Red Splitter"),
+        (Resource::ExpressTransportBelt, "Express Transport Belt"),
+        (Resource::ExpressTransportBelt, "Blue Belt"),
+        (Resource::ExpressUndergroundBelt, "Express Underground Belt"),
+        (Resource::ExpressUndergroundBelt, "Express Underground"),
+        (Resource::ExpressUndergroundBelt, "Blue Underground Belt"),
+        (Resource::ExpressUndergroundBelt, "Blue Underground"),
+        (Resource::ExpressSplitter, "Express Splitter"),
+        (Resource::ExpressSplitter, "Blue Splitter"),
+
+        // Inserters
+        (Resource::BurnerInserter, "Burner Inserter"),
+        (Resource::Inserter, "Inserter"),
+        (Resource::LongHandedInserter, "Long Handed Inserter"),
+        (Resource::LongHandedInserter, "Long Inserter"),
+        (Resource::FastInserter, "Fast Inserter"),
+        (Resource::FilterInserter, "Filter Inserter"),
+        (Resource::StackInserter, "Stack Inserter"),
+        (Resource::StackFilterInserter, "Stack Filter Inserter"),
+
+        // Storage
+        (Resource::WoodenChest, "Wooden Chest"),
+        (Resource::WoodenChest, "Wood Chest"),
+        (Resource::IronChest, "Iron Chest"),
+        (Resource::SteelChest, "Steel Chest"),
+        (Resource::ActiveProviderChest, "Active Provider Chest"),
+        (Resource::PassiveProviderChest, "Passive Provider Chest"),
+        (Resource::StorageChest, "Storage Chest"),
+        (Resource::RequesterChest, "Requester Chest"),
+
+        // Defensive Structures
+        (Resource::Wall, "Wall"),
+        (Resource::Gate, "Gate"),
+        (Resource::GunTurret, "Gun Turret"),
+        (Resource::LaserTurret, "Laser Turret"),
+        (Resource::FlamethrowerTurret, "Flamethrower Turret"),
+
+        // Machines
+        (Resource::BurnerMiningDrill, "Burner Mining Drill"),
+        (Resource::ElectricMiningDrill, "Electric Mining Drill"),
+        (Resource::StoneFurnace, "Stone Furnace"),
+        (Resource::SteelFurnace, "Steel Furnace"),
+        (Resource::ElectricFurnace, "Electric Furnace"),
+        (Resource::AssemblingMachine1, "Assembling Machine 1"),
+        (Resource::AssemblingMachine2, "Assembling Machine 2"),
+        (Resource::AssemblingMachine3, "Assembling Machine 3"),
+        (Resource::Lab, "Lab"),
+        (Resource::Beacon, "Beacon"),
+        (Resource::Radar, "Radar"),
+
+        // Modules
+        (Resource::EfficiencyModule1, "Efficiency Module 1"),
+        (Resource::EfficiencyModule2, "Efficiency Module 2"),
+        (Resource::EfficiencyModule3, "Efficiency Module 3"),
+        (Resource::ProductivityModule1, "Productivity Module 1"),
+        (Resource::ProductivityModule2, "Productivity Module 2"),
+        (Resource::ProductivityModule3, "Productivity Module 3"),
+        (Resource::SpeedModule1, "Speed Module 1"),
+        (Resource::SpeedModule2, "Speed Module 2"),
+        (Resource::SpeedModule3, "Speed Module 3"),
+
+        // Electric Network
+        (Resource::SmallElectricPole, "Small Electric Pole"),
+        (Resource::SmallElectricPole, "Small Pole"),
+        (Resource::MediumElectricPole, "Medium Electric Pole"),
+        (Resource::MediumElectricPole, "Medium Pole"),
+        (Resource::BigElectricPole, "Big Electric Pole"),
+        (Resource::BigElectricPole, "Big Pole"),
+        (Resource::Substation, "Substation"),
+        (Resource::Boiler, "Boiler"),
+        (Resource::SteamEngine, "Steam Engine"),
+        (Resource::SolarPanel, "Solar Panel"),
+        (Resource::Accumulator, "Accumulator"),
+
+        // Railway Network
+        (Resource::StraightRail, "Straight Rail"),
+        (Resource::StraightRail, "Rail"),
+        (Resource::TrainStop, "Train Stop"),
+        (Resource::RailSignal, "Rail Signal"),
+        (Resource::RailChainSignal, "Rail Chain Signal"),
+        (Resource::DieselLocomotive, "Diesel Locomotive"),
+        (Resource::DieselLocomotive, "Locomotive"),
+        (Resource::CargoWagon, "Cargo Wagon"),
+        (Resource::FluidWagon, "Fluid Wagon"),
+
+        // Liquid Network
+        (Resource::Pipe, "Pipe"),
+        (Resource::PipeToGround, "Pipe To Ground"),
+        (Resource::PipeToGround, "Pipe-To-Ground"),
+        (Resource::OffshorePump, "Offshore Pump"),
+        (Resource::StorageTank, "Storage Tank"),
+        (Resource::OilRefinery, "Oil Refinery"),
+        (Resource::ChemicalPlant, "Chemical Plant"),
+        (Resource::Pumpjack, "Pumpjack"),
+        (Resource::SmallPump, "Small Pump"),
+
+        // Circuit Network
+        (Resource::Lamp, "Lamp"),
+        (Resource::RedWire, "Red Wire"),
+        (Resource::GreenWire, "Green Wire"),
+        (Resource::ArithmeticCombinator, "Arithmetic Combinator"),
+        (Resource::DeciderCombinator, "Decider Combinator"),
+        (Resource::ConstantCombinator, "Constant Combinator"),
+        (Resource::PowerSwitch, "Power Switch"),
+        (Resource::ProgrammableSpeaker, "Programmable Speaker"),
+
+        // Rocket Components
+        (Resource::RocketSilo, "Rocket Silo"),
+        (Resource::LowDensityStructure, "Low Density Structure"),
+        (Resource::RocketControlUnit, "Rocket Control Unit"),
+        (Resource::RocketFuel, "Rocket Fuel"),
+        (Resource::RocketPart, "Rocket Part"),
+        (Resource::Satellite, "Satellite"),
     ];
 
     static ref PROTO_BUILDINGS : Vec<ProtoBuilding<'static>> = vec![
+        ProtoBuilding {
+            name: "Assembling Machine 1",
+            recipes: vec![
+                "Iron Gear Wheel",
+                "Iron Stick",
+                "Wood",
+            ],
+            energy_consumption: 90.0,
+            crafting_speed: 0.5,
+        },
+        ProtoBuilding {
+            name: "Assembling Machine 2",
+            recipes: vec![
+                "Iron Gear Wheel",
+                "Iron Stick",
+                "Wood",
+            ],
+            energy_consumption: 150.0,
+            crafting_speed: 0.75,
+        },
+        ProtoBuilding {
+            name: "Assembling Machine 3",
+            recipes: vec![
+                "Iron Gear Wheel",
+                "Iron Stick",
+                "Wood",
+            ],
+            energy_consumption: 210.0,
+            crafting_speed: 1.25,
+        },
         ProtoBuilding {
             name: "Boiler",
             recipes: vec![
@@ -48,6 +550,19 @@ lazy_static! {
             crafting_speed: 1.0,
         },
         ProtoBuilding {
+            name: "Chemical Plant",
+            recipes: vec![
+                "Heavy oil cracking",
+                "Solid fuel (Light oil)",
+                "Solid fuel (Petroleum)",
+                "Sulfur",
+                "Plastic bar",
+                "Battery",
+            ],
+            energy_consumption: 210.0,
+            crafting_speed: 1.25,
+        },
+        ProtoBuilding {
             name: "Oil Refinery",
             recipes: vec![
                 "Coal liquefaction",
@@ -55,22 +570,24 @@ lazy_static! {
             energy_consumption: 420.0,
             crafting_speed: 1.0,
         },
-        ProtoBuilding {
-            name: "Chemical Plant",
-            recipes: vec![
-                "Heavy oil cracking",
-                "Solid fuel (Light oil)",
-                "Solid fuel (Petroleum)",
-            ],
-            energy_consumption: 210.0,
-            crafting_speed: 1.25,
-        },
     ];
 
     static ref PROTO_RECIPES : Vec<ProtoRecipe<'static>> = vec![
-        // Recipes required for the coal liquefaction line
+        ProtoRecipe {
+            name: "Burning solid fuel",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::Water, 60.0),
+                (Resource::SolidFuel, 0.144),
+            ],
+            outputs: vec![
+                (Resource::Steam, 60.0),
+            ],
+            time: 1.0,
+        },
         ProtoRecipe {
             name: "Coal liquefaction",
+            aliases: vec![],
             inputs: vec![
                 (Resource::Coal, 10.0),
                 (Resource::HeavyOil, 25.0),
@@ -85,6 +602,7 @@ lazy_static! {
         },
         ProtoRecipe {
             name: "Heavy oil cracking",
+            aliases: vec![],
             inputs: vec![
                 (Resource::HeavyOil, 40.0),
                 (Resource::Water, 30.0),
@@ -96,6 +614,7 @@ lazy_static! {
         },
         ProtoRecipe {
             name: "Solid fuel (Light oil)",
+            aliases: vec![],
             inputs: vec![
                 (Resource::LightOil, 10.0),
             ],
@@ -106,6 +625,7 @@ lazy_static! {
         },
         ProtoRecipe {
             name: "Solid fuel (Petroleum)",
+            aliases: vec![],
             inputs: vec![
                 (Resource::Petroleum, 20.0),
             ],
@@ -115,15 +635,79 @@ lazy_static! {
             time: 3.0,
         },
         ProtoRecipe {
-            name: "Burning solid fuel",
+            name: "Wood",
+            aliases: vec![],
             inputs: vec![
-                (Resource::Water, 60.0),
-                (Resource::SolidFuel, 0.144),
+                (Resource::RawWood, 1.0),
             ],
             outputs: vec![
-                (Resource::Steam, 60.0),
+                (Resource::Wood, 2.0),
+            ],
+            time: 0.5,
+        },
+        // TODO: Smelting recipes
+        ProtoRecipe {
+            name: "Sulfur",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::Petroleum, 30.0),
+                (Resource::Water, 30.0),
+            ],
+            outputs: vec![
+                (Resource::Sulfur, 2.0),
             ],
             time: 1.0,
+        },
+        ProtoRecipe {
+            name: "Plastic bar",
+            aliases: vec![
+                "Plastic",
+            ],
+            inputs: vec![
+                (Resource::Coal, 1.0),
+                (Resource::Petroleum, 20.0),
+            ],
+            outputs: vec![
+                (Resource::PlasticBar, 2.0),
+            ],
+            time: 1.0,
+        },
+        ProtoRecipe {
+            name: "Battery",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::CopperPlate, 1.0),
+                (Resource::IronPlate, 1.0),
+                (Resource::SulfuricAcid, 20.0),
+            ],
+            outputs: vec![
+                (Resource::Battery, 1.0),
+            ],
+            time: 5.0,
+        },
+        ProtoRecipe {
+            name: "Iron Stick",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::IronPlate, 1.0),
+            ],
+            outputs: vec![
+                (Resource::IronStick, 2.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Iron Gear Wheel",
+            aliases: vec![
+                "Iron Gear",
+            ],
+            inputs: vec![
+                (Resource::IronPlate, 2.0),
+            ],
+            outputs: vec![
+                (Resource::IronGearWheel, 1.0),
+            ],
+            time: 0.5,
         },
     ];
 
@@ -367,6 +951,7 @@ struct Recipe<'a> {
 #[derive(Debug, Clone)]
 struct ProtoRecipe<'a> {
     name: &'a str,
+    aliases: Vec<&'a str>,
     inputs: Vec<(Resource, f32)>,
     outputs: Vec<(Resource, f32)>,
     time: f32,
@@ -377,6 +962,11 @@ impl<'a> ProtoRecipe<'a> {
         for ref proto in PROTO_RECIPES.iter() {
             if proto.name.to_lowercase() == name.to_lowercase() {
                 return Some((*proto).clone());
+            }
+            for alias in proto.aliases.iter() {
+                if name.to_lowercase() == alias.to_lowercase() {
+                    return Some((*proto).clone());
+                }
             }
         }
         None
@@ -508,6 +1098,8 @@ impl<'a> Design<'a> {
                 let recipe_name = datum.children[0].value;
                 let proto_recipe = ProtoRecipe::from_name(recipe_name)
                     .ok_or(InputError::new("Unknown recipe"))?;
+                // TODO: Check that recipe is allowed in the building
+
                 let mut required_inputs : HashMap<Resource, f32> = proto_recipe.inputs.iter().cloned().collect();
                 let mut required_outputs : HashMap<Resource, f32> = proto_recipe.outputs.iter().cloned().collect();
                 let mut line_inputs = Vec::new();
