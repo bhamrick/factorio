@@ -219,7 +219,7 @@ impl<'a> Building<'a> {
         for &(ref line, amount) in self.recipe.outputs.iter() {
             modified_outputs.push((line.clone(), amount * (1.0 + modifiers.productivity)));
         }
-        let modified_crafting_speed = self.crafting_speed + modifiers.speed;
+        let modified_crafting_speed = self.crafting_speed * (1.0 + modifiers.speed);
         let modified_time = self.recipe.time / modified_crafting_speed;
         Recipe {
             name: self.recipe.name,

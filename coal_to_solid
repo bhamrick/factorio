@@ -17,7 +17,8 @@ Boiler
 Oil Refinery
     Coal liquefaction
     Modules
-        Efficiency 1: 3
+        Efficiency 1: 1
+        Productivity 1: 2
     Inputs
         Coal: coal_in
         Heavy oil: heavy_loop
@@ -40,7 +41,8 @@ Chemical Plant
 Chemical Plant
     Solid fuel (Light oil)
     Modules
-        Productivity 1: 3
+        Productivity 1: 1
+        Efficiency 1: 2
     Inputs
         Light oil: light_oil
     Outputs
@@ -49,7 +51,8 @@ Chemical Plant
 Chemical Plant
     Solid fuel (Petroleum)
     Modules
-        Productivity 1: 3
+        Productivity 1: 2
+        Efficiency 1: 1
     Inputs
         Petroleum: petroleum
     Outputs
