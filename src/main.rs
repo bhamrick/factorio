@@ -155,8 +155,7 @@ lazy_static! {
 impl Resource {
     fn from_str(name: &str) -> Result<Resource, InputError> {
         for &(resource, resource_name) in RESOURCE_NAMES.iter() {
-            // TODO: Make this comparison case insensitive
-            if name == resource_name {
+            if name.to_lowercase() == resource_name.to_lowercase() {
                 return Ok(resource);
             }
         }
@@ -268,7 +267,7 @@ impl Module {
 
     fn from_name(name: &str) -> Result<Module, InputError> {
         for &(module_type, module_name) in MODULE_NAMES.iter() {
-            if name == module_name {
+            if name.to_lowercase() == module_name.to_lowercase() {
                 return Ok(module_type)
             }
         }
@@ -349,8 +348,7 @@ struct ProtoBuilding<'a> {
 impl<'a> ProtoBuilding<'a> {
     fn from_name(name: &'a str) -> Option<ProtoBuilding<'a>> {
         for ref proto in PROTO_BUILDINGS.iter() {
-            // TODO: Make this case insensitive
-            if proto.name == name {
+            if proto.name.to_lowercase() == name.to_lowercase() {
                 return Some((*proto).clone());
             }
         }
@@ -377,8 +375,7 @@ struct ProtoRecipe<'a> {
 impl<'a> ProtoRecipe<'a> {
     fn from_name(name: &'a str) -> Option<ProtoRecipe<'a>> {
         for ref proto in PROTO_RECIPES.iter() {
-            // TODO: Make this case insensitive
-            if proto.name == name {
+            if proto.name.to_lowercase() == name.to_lowercase() {
                 return Some((*proto).clone());
             }
         }
