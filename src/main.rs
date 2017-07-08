@@ -65,6 +65,15 @@ enum Resource {
     Lubricant,
     Steam,
 
+    // Fluid Barrels
+    CrudeOilBarrel,
+    HeavyOilBarrel,
+    LightOilBarrel,
+    LubricantBarrel,
+    PetroleumBarrel,
+    SulfuricAcidBarrel,
+    WaterBarrel,
+
     // Player Equipment
     IronAxe,
     SteelAxe,
@@ -77,7 +86,7 @@ enum Resource {
     RocketLauncher,
     Flamethrower,
     LandMine,
-    BasicGrenade,
+    Grenade,
     ClusterGrenade,
     DefenderCapsule,
     PoisonCapsule,
@@ -303,11 +312,22 @@ lazy_static! {
 
         // Chemicals
         (Resource::Petroleum, "Petroleum"),
-        (Resource::LightOil, "Light oil"),
-        (Resource::HeavyOil, "Heavy oil"),
+        (Resource::Petroleum, "Petroleum Gas"),
+        (Resource::LightOil, "Light Oil"),
+        (Resource::HeavyOil, "Heavy Oil"),
         (Resource::SulfuricAcid, "Sulfuric Acid"),
         (Resource::Lubricant, "Lubricant"),
         (Resource::Steam, "Steam"),
+
+        // Fluid Barrels
+        (Resource::CrudeOilBarrel, "Crude Oil Barrel"),
+        (Resource::HeavyOilBarrel, "Heavy Oil Barrel"),
+        (Resource::LightOilBarrel, "Light Oil Barrel"),
+        (Resource::LubricantBarrel, "Lubricant Barrel"),
+        (Resource::PetroleumBarrel, "Petroleum Barrel"),
+        (Resource::PetroleumBarrel, "Petroleum Gas Barrel"),
+        (Resource::SulfuricAcidBarrel, "Sulfuric Acid Barrel"),
+        (Resource::WaterBarrel, "Water Barrel"),
 
         // Player Equipment
         (Resource::IronAxe, "Iron Axe"),
@@ -321,8 +341,8 @@ lazy_static! {
         (Resource::RocketLauncher, "Rocket Launcher"),
         (Resource::Flamethrower, "Flamethrower"),
         (Resource::LandMine, "Land Mine"),
-        (Resource::BasicGrenade, "Basic Grenade"),
-        (Resource::BasicGrenade, "Grenade"),
+        (Resource::Grenade, "Basic Grenade"),
+        (Resource::Grenade, "Grenade"),
         (Resource::ClusterGrenade, "Cluster Grenade"),
         (Resource::DefenderCapsule, "Defender Capsule"),
         (Resource::PoisonCapsule, "Poison Capsule"),
@@ -514,8 +534,22 @@ lazy_static! {
         ProtoBuilding {
             name: "Assembling Machine 1",
             recipes: vec![
+                "Barrel",
+                "Copper Cable",
+                "Destroyer Capsule",
+                "Discharge Defense Remote",
+                "Distractor Capsule",
+                "Electronic Circuit",
+                "Flamethrower",
+                "Grenade",
+                "Iron Axe",
                 "Iron Gear Wheel",
                 "Iron Stick",
+                "Land Mine",
+                "Pistol",
+                "Science Pack 1",
+                "Science Pack 2",
+                "Steel Axe",
                 "Wood",
             ],
             energy_consumption: 90.0,
@@ -524,8 +558,54 @@ lazy_static! {
         ProtoBuilding {
             name: "Assembling Machine 2",
             recipes: vec![
+                "Advanced Circuit",
+                "Barrel",
+                "Car",
+                "Cluster Grenade",
+                "Combat Shotgun",
+                "Copper Cable",
+                "Defender Capsule",
+                "Destroyer Capsule",
+                "Discharge Defense Remote",
+                "Distractor Capsule",
+                "Electric Engine Unit",
+                "Electronic Circuit",
+                "Flamethrower",
+                "Empty Crude Oil Barrel",
+                "Empty Heavy Oil Barrel",
+                "Empty Light Oil Barrel",
+                "Empty Petroleum Gas Barrel",
+                "Empty Sulfuric Acid Barrel",
+                "Empty Water Barrel",
+                "Engine Unit",
+                "Explosives",
+                "Fill Crude Oil Barrel",
+                "Fill Heavy Oil Barrel",
+                "Fill Light Oil Barrel",
+                "Fill Petroleum Gas Barrel",
+                "Fill Sulfuric Acid Barrel",
+                "Fill Water Barrel",
+                "Flying Robot Frame",
+                "Grenade",
+                "High Tech Science Pack",
+                "Iron Axe",
                 "Iron Gear Wheel",
                 "Iron Stick",
+                "Land Mine",
+                "Military Science Pack",
+                "Pistol",
+                "Poison Capsule",
+                "Rocket Launcher",
+                "Science Pack 1",
+                "Science Pack 2",
+                "Science Pack 3",
+                "Shotgun",
+                "Slowdown Capsule",
+                "Steel Axe",
+                "Submachine Gun",
+                "Tank",
+                "Processing Unit",
+                "Production Science Pack",
                 "Wood",
             ],
             energy_consumption: 150.0,
@@ -534,8 +614,54 @@ lazy_static! {
         ProtoBuilding {
             name: "Assembling Machine 3",
             recipes: vec![
+                "Advanced Circuit",
+                "Barrel",
+                "Car",
+                "Cluster Grenade",
+                "Combat Shotgun",
+                "Copper Cable",
+                "Defender Capsule",
+                "Destroyer Capsule",
+                "Discharge Defense Remote",
+                "Distractor Capsule",
+                "Electric Engine Unit",
+                "Electronic Circuit",
+                "Flamethrower",
+                "Empty Crude Oil Barrel",
+                "Empty Heavy Oil Barrel",
+                "Empty Light Oil Barrel",
+                "Empty Petroleum Gas Barrel",
+                "Empty Sulfuric Acid Barrel",
+                "Empty Water Barrel",
+                "Engine Unit",
+                "Explosives",
+                "Fill Crude Oil Barrel",
+                "Fill Heavy Oil Barrel",
+                "Fill Light Oil Barrel",
+                "Fill Petroleum Gas Barrel",
+                "Fill Sulfuric Acid Barrel",
+                "Fill Water Barrel",
+                "Flying Robot Frame",
+                "Grenade",
+                "High Tech Science Pack",
+                "Iron Axe",
                 "Iron Gear Wheel",
                 "Iron Stick",
+                "Land Mine",
+                "Military Science Pack",
+                "Pistol",
+                "Poison Capsule",
+                "Rocket Launcher",
+                "Science Pack 1",
+                "Science Pack 2",
+                "Science Pack 3",
+                "Shotgun",
+                "Slowdown Capsule",
+                "Steel Axe",
+                "Submachine Gun",
+                "Tank",
+                "Processing Unit",
+                "Production Science Pack",
                 "Wood",
             ],
             energy_consumption: 210.0,
@@ -544,7 +670,7 @@ lazy_static! {
         ProtoBuilding {
             name: "Boiler",
             recipes: vec![
-                "Burning solid fuel",
+                "Boiling (Solid Fuel)",
             ],
             energy_consumption: 0.0,
             crafting_speed: 1.0,
@@ -574,7 +700,7 @@ lazy_static! {
 
     static ref PROTO_RECIPES : Vec<ProtoRecipe<'static>> = vec![
         ProtoRecipe {
-            name: "Burning solid fuel",
+            name: "Boiling (Solid Fuel)",
             aliases: vec![],
             inputs: vec![
                 (Resource::Water, 60.0),
@@ -706,6 +832,654 @@ lazy_static! {
             ],
             outputs: vec![
                 (Resource::IronGearWheel, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Copper Cable",
+            aliases: vec![
+                "Copper Wire",
+            ],
+            inputs: vec![
+                (Resource::CopperPlate, 1.0),
+            ],
+            outputs: vec![
+                (Resource::CopperCable, 2.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Electronic Circuit",
+            aliases: vec![
+                "Green Circuit",
+            ],
+            inputs: vec![
+                (Resource::CopperCable, 3.0),
+                (Resource::IronPlate, 1.0),
+            ],
+            outputs: vec![
+                (Resource::ElectronicCircuit, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Advanced Circuit",
+            aliases: vec![
+                "Red Circuit",
+            ],
+            inputs: vec![
+                (Resource::CopperCable, 4.0),
+                (Resource::ElectronicCircuit, 2.0),
+                (Resource::PlasticBar, 2.0),
+            ],
+            outputs: vec![
+                (Resource::AdvancedCircuit, 1.0),
+            ],
+            time: 6.0,
+        },
+        ProtoRecipe {
+            name: "Processing Unit",
+            aliases: vec![
+                "Blue Circuit",
+            ],
+            inputs: vec![
+                (Resource::AdvancedCircuit, 2.0),
+                (Resource::ElectronicCircuit, 20.0),
+                (Resource::SulfuricAcid, 5.0),
+            ],
+            outputs: vec![
+                (Resource::ProcessingUnit, 1.0),
+            ],
+            time: 10.0,
+        },
+        ProtoRecipe {
+            name: "Engine Unit",
+            aliases: vec![
+                "Engine",
+            ],
+            inputs: vec![
+                (Resource::IronGearWheel, 1.0),
+                (Resource::Pipe, 2.0),
+                (Resource::SteelPlate, 1.0),
+            ],
+            outputs: vec![
+                (Resource::EngineUnit, 1.0),
+            ],
+            time: 10.0,
+        },
+        ProtoRecipe {
+            name: "Electric Engine Unit",
+            aliases: vec![
+                "Electric Engine",
+            ],
+            inputs: vec![
+                (Resource::ElectronicCircuit, 2.0),
+                (Resource::EngineUnit, 1.0),
+                (Resource::Lubricant, 15.0),
+            ],
+            outputs: vec![
+                (Resource::ElectricEngineUnit, 1.0),
+            ],
+            time: 10.0,
+        },
+        ProtoRecipe {
+            name: "Flying Robot Frame",
+            aliases: vec![
+                "Robot Frame",
+            ],
+            inputs: vec![
+                (Resource::Battery, 2.0),
+                (Resource::ElectricEngineUnit, 1.0),
+                (Resource::ElectronicCircuit, 3.0),
+                (Resource::SteelPlate, 1.0),
+            ],
+            outputs: vec![
+                (Resource::FlyingRobotFrame, 1.0),
+            ],
+            time: 20.0,
+        },
+        ProtoRecipe {
+            name: "Science Pack 1",
+            aliases: vec![
+                "Red Science",
+            ],
+            inputs: vec![
+                (Resource::CopperPlate, 1.0),
+                (Resource::IronGearWheel, 1.0),
+            ],
+            outputs: vec![
+                (Resource::SciencePack1, 1.0),
+            ],
+            time: 5.0,
+        },
+        ProtoRecipe {
+            name: "Science Pack 2",
+            aliases: vec![
+                "Green Science",
+            ],
+            inputs: vec![
+                (Resource::Inserter, 1.0),
+                (Resource::TransportBelt, 1.0),
+            ],
+            outputs: vec![
+                (Resource::SciencePack2, 1.0),
+            ],
+            time: 6.0,
+        },
+        ProtoRecipe {
+            name: "Science Pack 3",
+            aliases: vec![
+                "Blue Science",
+            ],
+            inputs: vec![
+                (Resource::AdvancedCircuit, 1.0),
+                (Resource::ElectricMiningDrill, 1.0),
+                (Resource::EngineUnit, 1.0),
+            ],
+            outputs: vec![
+                (Resource::SciencePack3, 1.0),
+            ],
+            time: 12.0,
+        },
+        ProtoRecipe {
+            name: "Military Science Pack",
+            aliases: vec![
+                "Military Science",
+                "Grey Science",
+                "Gray Science",
+            ],
+            inputs: vec![
+                (Resource::Grenade, 1.0),
+                (Resource::GunTurret, 1.0),
+                (Resource::PiercingRoundsMagazine, 1.0),
+            ],
+            outputs: vec![
+                (Resource::MilitarySciencePack, 2.0),
+            ],
+            time: 10.0,
+        },
+        ProtoRecipe {
+            name: "Production Science Pack",
+            aliases: vec![
+                "Production Science",
+                "Purple Science",
+            ],
+            inputs: vec![
+                (Resource::AssemblingMachine1, 1.0),
+                (Resource::ElectricEngineUnit, 1.0),
+                (Resource::ElectricFurnace, 1.0),
+            ],
+            outputs: vec![
+                (Resource::ProductionSciencePack, 2.0),
+            ],
+            time: 14.0,
+        },
+        ProtoRecipe {
+            name: "High Tech Science Pack",
+            aliases: vec![
+                "High Tech Science",
+                "Yellow Science",
+            ],
+            inputs: vec![
+                (Resource::Battery, 1.0),
+                (Resource::CopperCable, 30.0),
+                (Resource::ProcessingUnit, 3.0),
+                (Resource::SpeedModule1, 1.0),
+            ],
+            outputs: vec![
+                (Resource::HighTechSciencePack, 2.0),
+            ],
+            time: 14.0,
+        },
+        ProtoRecipe {
+            name: "Rocket Launch",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::RocketPart, 100.0),
+                (Resource::Satellite, 1.0),
+            ],
+            outputs: vec![
+                (Resource::SpaceSciencePack, 1000.0),
+            ],
+            time: 5.0,
+        },
+        ProtoRecipe {
+            name: "Barrel",
+            aliases: vec![
+                "Empty Barrel",
+            ],
+            inputs: vec![
+                (Resource::SteelPlate, 1.0),
+            ],
+            outputs: vec![
+                (Resource::EmptyBarrel, 1.0),
+            ],
+            time: 1.0,
+        },
+        ProtoRecipe {
+            name: "Fill Crude Oil Barrel",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::EmptyBarrel, 1.0),
+                (Resource::CrudeOil, 250.0),
+            ],
+            outputs: vec![
+                (Resource::CrudeOilBarrel, 1.0),
+            ],
+            time: 1.0,
+        },
+        ProtoRecipe {
+            name: "Fill Heavy Oil Barrel",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::EmptyBarrel, 1.0),
+                (Resource::HeavyOil, 250.0),
+            ],
+            outputs: vec![
+                (Resource::HeavyOilBarrel, 1.0),
+            ],
+            time: 1.0,
+        },
+        ProtoRecipe {
+            name: "Fill Light Oil Barrel",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::EmptyBarrel, 1.0),
+                (Resource::LightOil, 250.0),
+            ],
+            outputs: vec![
+                (Resource::LightOilBarrel, 1.0),
+            ],
+            time: 1.0,
+        },
+        ProtoRecipe {
+            name: "Fill Lubricant Barrel",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::EmptyBarrel, 1.0),
+                (Resource::Lubricant, 250.0),
+            ],
+            outputs: vec![
+                (Resource::LubricantBarrel, 1.0),
+            ],
+            time: 1.0,
+        },
+        ProtoRecipe {
+            name: "Fill Petroleum Gas Barrel",
+            aliases: vec![
+                "Fill Petroleum Barrel",
+            ],
+            inputs: vec![
+                (Resource::EmptyBarrel, 1.0),
+                (Resource::Petroleum, 250.0),
+            ],
+            outputs: vec![
+                (Resource::PetroleumBarrel, 1.0),
+            ],
+            time: 1.0,
+        },
+        ProtoRecipe {
+            name: "Fill Sulfuric Acid Barrel",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::EmptyBarrel, 1.0),
+                (Resource::SulfuricAcid, 250.0),
+            ],
+            outputs: vec![
+                (Resource::SulfuricAcidBarrel, 1.0),
+            ],
+            time: 1.0,
+        },
+        ProtoRecipe {
+            name: "Fill Water Barrel",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::EmptyBarrel, 1.0),
+                (Resource::Water, 250.0),
+            ],
+            outputs: vec![
+                (Resource::WaterBarrel, 1.0),
+            ],
+            time: 1.0,
+        },
+        ProtoRecipe {
+            name: "Empty Crude Oil Barrel",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::CrudeOilBarrel, 1.0),
+            ],
+            outputs: vec![
+                (Resource::EmptyBarrel, 1.0),
+                (Resource::CrudeOil, 250.0),
+            ],
+            time: 1.0,
+        },
+        ProtoRecipe {
+            name: "Empty Heavy Oil Barrel",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::HeavyOilBarrel, 1.0),
+            ],
+            outputs: vec![
+                (Resource::EmptyBarrel, 1.0),
+                (Resource::HeavyOil, 250.0),
+            ],
+            time: 1.0,
+        },
+        ProtoRecipe {
+            name: "Empty Light Oil Barrel",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::LightOilBarrel, 1.0),
+            ],
+            outputs: vec![
+                (Resource::EmptyBarrel, 1.0),
+                (Resource::LightOil, 250.0),
+            ],
+            time: 1.0,
+        },
+        ProtoRecipe {
+            name: "Empty Lubricant Barrel",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::LubricantBarrel, 1.0),
+            ],
+            outputs: vec![
+                (Resource::EmptyBarrel, 1.0),
+                (Resource::Lubricant, 250.0),
+            ],
+            time: 1.0,
+        },
+        ProtoRecipe {
+            name: "Empty Petroleum Gas Barrel",
+            aliases: vec![
+                "Empty Petroleum Barrel",
+            ],
+            inputs: vec![
+                (Resource::PetroleumBarrel, 1.0),
+            ],
+            outputs: vec![
+                (Resource::EmptyBarrel, 1.0),
+                (Resource::Petroleum, 250.0),
+            ],
+            time: 1.0,
+        },
+        ProtoRecipe {
+            name: "Empty Sulfuric Acid Barrel",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::SulfuricAcidBarrel, 1.0),
+            ],
+            outputs: vec![
+                (Resource::EmptyBarrel, 1.0),
+                (Resource::SulfuricAcid, 250.0),
+            ],
+            time: 1.0,
+        },
+        ProtoRecipe {
+            name: "Empty Water Barrel",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::WaterBarrel, 1.0),
+            ],
+            outputs: vec![
+                (Resource::EmptyBarrel, 1.0),
+                (Resource::Water, 250.0),
+            ],
+            time: 1.0,
+        },
+        ProtoRecipe {
+            name: "Explosives",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::Coal, 1.0),
+                (Resource::Sulfur, 1.0),
+                (Resource::Water, 10.0),
+            ],
+            outputs: vec![
+                (Resource::Explosives, 1.0),
+            ],
+            time: 5.0,
+        },
+        ProtoRecipe {
+            name: "Iron Axe",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::IronPlate, 3.0),
+                (Resource::IronStick, 2.0),
+            ],
+            outputs: vec![
+                (Resource::IronAxe, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Steel Axe",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::IronStick, 2.0),
+                (Resource::SteelPlate, 5.0),
+            ],
+            outputs: vec![
+                (Resource::SteelAxe, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Pistol",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::CopperPlate, 5.0),
+                (Resource::IronPlate, 5.0),
+            ],
+            outputs: vec![
+                (Resource::Pistol, 1.0),
+            ],
+            time: 5.0,
+        },
+        ProtoRecipe {
+            name: "Submachine Gun",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::CopperPlate, 5.0),
+                (Resource::IronGearWheel, 10.0),
+                (Resource::IronPlate, 10.0),
+            ],
+            outputs: vec![
+                (Resource::SubmachineGun, 1.0),
+            ],
+            time: 10.0,
+        },
+        ProtoRecipe {
+            name: "Shotgun",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::CopperPlate, 10.0),
+                (Resource::IronGearWheel, 5.0),
+                (Resource::IronPlate, 15.0),
+                (Resource::Wood, 5.0),
+            ],
+            outputs: vec![
+                (Resource::Shotgun, 1.0),
+            ],
+            time: 10.0,
+        },
+        ProtoRecipe {
+            name: "Combat Shotgun",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::CopperPlate, 10.0),
+                (Resource::IronGearWheel, 5.0),
+                (Resource::SteelPlate, 15.0),
+                (Resource::Wood, 10.0),
+            ],
+            outputs: vec![
+                (Resource::CombatShotgun, 1.0),
+            ],
+            time: 10.0,
+        },
+        ProtoRecipe {
+            name: "Rocket Launcher",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::ElectronicCircuit, 5.0),
+                (Resource::IronGearWheel, 5.0),
+                (Resource::IronPlate, 5.0),
+            ],
+            outputs: vec![
+                (Resource::RocketLauncher, 1.0),
+            ],
+            time: 10.0,
+        },
+        ProtoRecipe {
+            name: "Flamethrower",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::IronGearWheel, 10.0),
+                (Resource::SteelPlate, 5.0),
+            ],
+            outputs: vec![
+                (Resource::Flamethrower, 1.0),
+            ],
+            time: 10.0,
+        },
+        ProtoRecipe {
+            name: "Land Mine",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::Explosives, 2.0),
+                (Resource::SteelPlate, 1.0),
+            ],
+            outputs: vec![
+                (Resource::LandMine, 4.0),
+            ],
+            time: 5.0,
+        },
+        ProtoRecipe {
+            name: "Grenade",
+            aliases: vec![
+                "Basic Grenade",
+            ],
+            inputs: vec![
+                (Resource::Coal, 10.0),
+                (Resource::IronPlate, 5.0),
+            ],
+            outputs: vec![
+                (Resource::Grenade, 1.0),
+            ],
+            time: 8.0,
+        },
+        ProtoRecipe {
+            name: "Cluster Grenade",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::Explosives, 5.0),
+                (Resource::Grenade, 7.0),
+                (Resource::SteelPlate, 5.0),
+            ],
+            outputs: vec![
+                (Resource::ClusterGrenade, 1.0),
+            ],
+            time: 8.0,
+        },
+        ProtoRecipe {
+            name: "Defender Capsule",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::ElectronicCircuit, 2.0),
+                (Resource::IronGearWheel, 3.0),
+                (Resource::PiercingRoundsMagazine, 1.0),
+            ],
+            outputs: vec![
+                (Resource::DefenderCapsule, 1.0),
+            ],
+            time: 8.0,
+        },
+        ProtoRecipe {
+            name: "Poison Capsule",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::Coal, 10.0),
+                (Resource::ElectronicCircuit, 3.0),
+                (Resource::SteelPlate, 3.0),
+            ],
+            outputs: vec![
+                (Resource::PoisonCapsule, 1.0),
+            ],
+            time: 8.0,
+        },
+        ProtoRecipe {
+            name: "Slowdown Capsule",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::Coal, 5.0),
+                (Resource::ElectronicCircuit, 2.0),
+                (Resource::SteelPlate, 2.0),
+            ],
+            outputs: vec![
+                (Resource::SlowdownCapsule, 1.0),
+            ],
+            time: 8.0,
+        },
+        ProtoRecipe {
+            name: "Distractor Capsule",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::AdvancedCircuit, 3.0),
+                (Resource::DefenderCapsule, 4.0),
+            ],
+            outputs: vec![
+                (Resource::DistractorCapsule, 1.0),
+            ],
+            time: 15.0,
+        },
+        ProtoRecipe {
+            name: "Destroyer Capsule",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::DistractorCapsule, 4.0),
+                (Resource::SpeedModule1, 1.0),
+            ],
+            outputs: vec![
+                (Resource::DestroyerCapsule, 1.0),
+            ],
+            time: 15.0,
+        },
+        ProtoRecipe {
+            name: "Discharge Defense Remote",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::ElectronicCircuit, 1.0),
+            ],
+            outputs: vec![
+                (Resource::DischargeDefenseRemote, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Car",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::EngineUnit, 8.0),
+                (Resource::IronPlate, 20.0),
+                (Resource::SteelPlate, 5.0),
+            ],
+            outputs: vec![
+                (Resource::Car, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Tank",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::AdvancedCircuit, 10.0),
+                (Resource::EngineUnit, 32.0),
+                (Resource::IronGearWheel, 15.0),
+                (Resource::SteelPlate, 50.0),
+            ],
+            outputs: vec![
+                (Resource::Tank, 1.0),
             ],
             time: 0.5,
         },

@@ -7,7 +7,7 @@ Outputs
     Solid fuel: solid_out
 
 Boiler
-    Burning solid fuel
+    Boiling (Solid Fuel)
     Inputs
         Water: water_in
         Solid fuel: solid_out
