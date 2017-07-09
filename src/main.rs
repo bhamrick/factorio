@@ -98,20 +98,20 @@ enum Resource {
     Tank,
  
     // Ammo
-    RegularMagazine,
+    FirearmMagazine,
     PiercingRoundsMagazine,
     ShotgunShells,
     PiercingShotgunShells,
     Rocket,
     ExplosiveRocket,
     FlamethrowerAmmo,
-    CannonShells,
-    ExplosiveCannonShells,
+    CannonShell,
+    ExplosiveCannonShell,
 
     // Armor
-    IronArmor,
+    LightArmor,
     HeavyArmor,
-    BasicModularArmor,
+    ModularArmor,
     PowerArmor,
     PowerArmor2,
 
@@ -354,9 +354,10 @@ lazy_static! {
         (Resource::Tank, "Tank"),
 
         // Ammo
-        (Resource::RegularMagazine, "Regular Magazine"),
-        (Resource::RegularMagazine, "Magazine"),
-        (Resource::RegularMagazine, "Ammo"),
+        (Resource::FirearmMagazine, "Firearm Magazine"),
+        (Resource::FirearmMagazine, "Regular Magazine"),
+        (Resource::FirearmMagazine, "Magazine"),
+        (Resource::FirearmMagazine, "Ammo"),
         (Resource::PiercingRoundsMagazine, "Piercing Rounds Magazine"),
         (Resource::PiercingRoundsMagazine, "Piercing Magazine"),
         (Resource::PiercingRoundsMagazine, "Piercing Ammo"),
@@ -365,14 +366,14 @@ lazy_static! {
         (Resource::Rocket, "Rocket"),
         (Resource::ExplosiveRocket, "Explosive Rocket"),
         (Resource::FlamethrowerAmmo, "Flamethrower Ammo"),
-        (Resource::CannonShells, "Cannon Shells"),
-        (Resource::ExplosiveCannonShells, "Explosive Cannon Shells"),
+        (Resource::CannonShell, "Cannon Shell"),
+        (Resource::ExplosiveCannonShell, "Explosive Cannon Shell"),
 
         // Armor
-        (Resource::IronArmor, "Iron Armor"),
+        (Resource::LightArmor, "Light Armor"),
         (Resource::HeavyArmor, "Heavy Armor"),
-        (Resource::BasicModularArmor, "Basic Modular Armor"),
-        (Resource::BasicModularArmor, "Modular Armor"),
+        (Resource::ModularArmor, "Modular Armor"),
+        (Resource::ModularArmor, "Basic Modular Armor"),
         (Resource::PowerArmor, "Power Armor"),
         (Resource::PowerArmor2, "Power Armor Mk 2"),
         (Resource::PowerArmor2, "Power Armor Mk2"),
@@ -389,15 +390,15 @@ lazy_static! {
         (Resource::PortableFusionReactor, "Portable Fusion Reactor"),
         (Resource::PersonalLaserDefense, "Personal Laser Defense"),
         (Resource::DischargeDefense, "Discharge Defense"),
-        (Resource::Exoskeleton, "Basic Exoskeleton Equipment"),
         (Resource::Exoskeleton, "Exoskeleton"),
+        (Resource::Exoskeleton, "Basic Exoskeleton Equipment"),
         (Resource::PersonalRoboport, "Personal Roboport"),
 
         // Special
         (Resource::LogisticRobot, "Logistic Robot"),
         (Resource::ConstructionRobot, "Construction Robot"),
         (Resource::Roboport, "Roboport"),
-        (Resource::SolidFuel, "Solid fuel"),
+        (Resource::SolidFuel, "Solid Fuel"),
 
         // Placeable items
         (Resource::TransportBelt, "Transport Belt"),
@@ -533,166 +534,31 @@ lazy_static! {
     static ref PROTO_BUILDINGS : Vec<ProtoBuilding<'static>> = vec![
         ProtoBuilding {
             name: "Assembling Machine 1",
-            recipes: vec![
-                "Barrel",
-                "Copper Cable",
-                "Destroyer Capsule",
-                "Discharge Defense Remote",
-                "Distractor Capsule",
-                "Electronic Circuit",
-                "Flamethrower",
-                "Grenade",
-                "Iron Axe",
-                "Iron Gear Wheel",
-                "Iron Stick",
-                "Land Mine",
-                "Pistol",
-                "Science Pack 1",
-                "Science Pack 2",
-                "Steel Axe",
-                "Wood",
-            ],
             energy_consumption: 90.0,
             crafting_speed: 0.5,
         },
         ProtoBuilding {
             name: "Assembling Machine 2",
-            recipes: vec![
-                "Advanced Circuit",
-                "Barrel",
-                "Car",
-                "Cluster Grenade",
-                "Combat Shotgun",
-                "Copper Cable",
-                "Defender Capsule",
-                "Destroyer Capsule",
-                "Discharge Defense Remote",
-                "Distractor Capsule",
-                "Electric Engine Unit",
-                "Electronic Circuit",
-                "Flamethrower",
-                "Empty Crude Oil Barrel",
-                "Empty Heavy Oil Barrel",
-                "Empty Light Oil Barrel",
-                "Empty Petroleum Gas Barrel",
-                "Empty Sulfuric Acid Barrel",
-                "Empty Water Barrel",
-                "Engine Unit",
-                "Explosives",
-                "Fill Crude Oil Barrel",
-                "Fill Heavy Oil Barrel",
-                "Fill Light Oil Barrel",
-                "Fill Petroleum Gas Barrel",
-                "Fill Sulfuric Acid Barrel",
-                "Fill Water Barrel",
-                "Flying Robot Frame",
-                "Grenade",
-                "High Tech Science Pack",
-                "Iron Axe",
-                "Iron Gear Wheel",
-                "Iron Stick",
-                "Land Mine",
-                "Military Science Pack",
-                "Pistol",
-                "Poison Capsule",
-                "Rocket Launcher",
-                "Science Pack 1",
-                "Science Pack 2",
-                "Science Pack 3",
-                "Shotgun",
-                "Slowdown Capsule",
-                "Steel Axe",
-                "Submachine Gun",
-                "Tank",
-                "Processing Unit",
-                "Production Science Pack",
-                "Wood",
-            ],
             energy_consumption: 150.0,
             crafting_speed: 0.75,
         },
         ProtoBuilding {
             name: "Assembling Machine 3",
-            recipes: vec![
-                "Advanced Circuit",
-                "Barrel",
-                "Car",
-                "Cluster Grenade",
-                "Combat Shotgun",
-                "Copper Cable",
-                "Defender Capsule",
-                "Destroyer Capsule",
-                "Discharge Defense Remote",
-                "Distractor Capsule",
-                "Electric Engine Unit",
-                "Electronic Circuit",
-                "Flamethrower",
-                "Empty Crude Oil Barrel",
-                "Empty Heavy Oil Barrel",
-                "Empty Light Oil Barrel",
-                "Empty Petroleum Gas Barrel",
-                "Empty Sulfuric Acid Barrel",
-                "Empty Water Barrel",
-                "Engine Unit",
-                "Explosives",
-                "Fill Crude Oil Barrel",
-                "Fill Heavy Oil Barrel",
-                "Fill Light Oil Barrel",
-                "Fill Petroleum Gas Barrel",
-                "Fill Sulfuric Acid Barrel",
-                "Fill Water Barrel",
-                "Flying Robot Frame",
-                "Grenade",
-                "High Tech Science Pack",
-                "Iron Axe",
-                "Iron Gear Wheel",
-                "Iron Stick",
-                "Land Mine",
-                "Military Science Pack",
-                "Pistol",
-                "Poison Capsule",
-                "Rocket Launcher",
-                "Science Pack 1",
-                "Science Pack 2",
-                "Science Pack 3",
-                "Shotgun",
-                "Slowdown Capsule",
-                "Steel Axe",
-                "Submachine Gun",
-                "Tank",
-                "Processing Unit",
-                "Production Science Pack",
-                "Wood",
-            ],
             energy_consumption: 210.0,
             crafting_speed: 1.25,
         },
         ProtoBuilding {
             name: "Boiler",
-            recipes: vec![
-                "Boiling (Solid Fuel)",
-            ],
             energy_consumption: 0.0,
             crafting_speed: 1.0,
         },
         ProtoBuilding {
             name: "Chemical Plant",
-            recipes: vec![
-                "Heavy oil cracking",
-                "Solid fuel (Light oil)",
-                "Solid fuel (Petroleum)",
-                "Sulfur",
-                "Plastic bar",
-                "Battery",
-            ],
             energy_consumption: 210.0,
             crafting_speed: 1.25,
         },
         ProtoBuilding {
             name: "Oil Refinery",
-            recipes: vec![
-                "Coal liquefaction",
-            ],
             energy_consumption: 420.0,
             crafting_speed: 1.0,
         },
@@ -739,8 +605,23 @@ lazy_static! {
             time: 3.0,
         },
         ProtoRecipe {
-            name: "Solid fuel (Light oil)",
-            aliases: vec![],
+            name: "Solid Fuel (Heavy Oil)",
+            aliases: vec![
+                "Solid Fuel (Heavy)",
+            ],
+            inputs: vec![
+                (Resource::HeavyOil, 20.0),
+            ],
+            outputs: vec![
+                (Resource::SolidFuel, 1.0),
+            ],
+            time: 3.0,
+        },
+        ProtoRecipe {
+            name: "Solid Fuel (Light Oil)",
+            aliases: vec![
+                "Solid Fuel (Light)",
+            ],
             inputs: vec![
                 (Resource::LightOil, 10.0),
             ],
@@ -750,8 +631,10 @@ lazy_static! {
             time: 3.0,
         },
         ProtoRecipe {
-            name: "Solid fuel (Petroleum)",
-            aliases: vec![],
+            name: "Solid Fuel (Petroleum)",
+            aliases: vec![
+                "Solid Fuel (Petroleum Gas)",
+            ],
             inputs: vec![
                 (Resource::Petroleum, 20.0),
             ],
@@ -1483,6 +1366,377 @@ lazy_static! {
             ],
             time: 0.5,
         },
+        ProtoRecipe {
+            name: "Firearm Magazine",
+            aliases: vec![
+                "Regular Magazine",
+                "Ammo",
+            ],
+            inputs: vec![
+                (Resource::IronPlate, 4.0),
+            ],
+            outputs: vec![
+                (Resource::FirearmMagazine, 1.0),
+            ],
+            time: 1.0,
+        },
+        ProtoRecipe {
+            name: "Piercing Rounds Magazine",
+            aliases: vec![
+                "Piercing Magazine",
+                "Piercing Ammo",
+                "Piercing Rounds",
+            ],
+            inputs: vec![
+                (Resource::CopperPlate, 5.0),
+                (Resource::FirearmMagazine, 1.0),
+                (Resource::SteelPlate, 1.0),
+            ],
+            outputs: vec![
+                (Resource::PiercingRoundsMagazine, 1.0),
+            ],
+            time: 3.0,
+        },
+        ProtoRecipe {
+            name: "Shotgun Shells",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::CopperPlate, 2.0),
+                (Resource::IronPlate, 2.0),
+            ],
+            outputs: vec![
+                (Resource::ShotgunShells, 1.0),
+            ],
+            time: 3.0,
+        },
+        ProtoRecipe {
+            name: "Piercing Shotgun Shells",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::CopperPlate, 5.0),
+                (Resource::ShotgunShells, 2.0),
+                (Resource::SteelPlate, 2.0),
+            ],
+            outputs: vec![
+                (Resource::PiercingShotgunShells, 1.0),
+            ],
+            time: 8.0,
+        },
+        ProtoRecipe {
+            name: "Rocket",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::ElectronicCircuit, 1.0),
+                (Resource::Explosives, 1.0),
+                (Resource::IronPlate, 2.0),
+            ],
+            outputs: vec![
+                (Resource::Rocket, 1.0),
+            ],
+            time: 8.0,
+        },
+        ProtoRecipe {
+            name: "Explosive Rocket",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::Explosives, 2.0),
+                (Resource::Rocket, 1.0),
+            ],
+            outputs: vec![
+                (Resource::ExplosiveRocket, 1.0),
+            ],
+            time: 8.0,
+        },
+        ProtoRecipe {
+            name: "Flamethrower Ammo",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::HeavyOil, 50.0),
+                (Resource::LightOil, 50.0),
+                (Resource::SteelPlate, 5.0),
+            ],
+            outputs: vec![
+                (Resource::FlamethrowerAmmo, 1.0),
+            ],
+            time: 6.0,
+        },
+        ProtoRecipe {
+            name: "Cannon Shell",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::Explosives, 1.0),
+                (Resource::PlasticBar, 2.0),
+                (Resource::SteelPlate, 2.0),
+            ],
+            outputs: vec![
+                (Resource::CannonShell, 1.0),
+            ],
+            time: 8.0,
+        },
+        ProtoRecipe {
+            name: "Explosive Cannon Shell",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::Explosives, 2.0),
+                (Resource::PlasticBar, 2.0),
+                (Resource::SteelPlate, 2.0),
+            ],
+            outputs: vec![
+                (Resource::ExplosiveCannonShell, 1.0),
+            ],
+            time: 8.0,
+        },
+        ProtoRecipe {
+            name: "Light Armor",
+            aliases: vec![
+                "Iron Armor",
+            ],
+            inputs: vec![
+                (Resource::IronPlate, 40.0),
+            ],
+            outputs: vec![
+                (Resource::LightArmor, 1.0),
+            ],
+            time: 3.0,
+        },
+        ProtoRecipe {
+            name: "Heavy Armor",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::CopperPlate, 100.0),
+                (Resource::SteelPlate, 50.0),
+            ],
+            outputs: vec![
+                (Resource::HeavyArmor, 1.0),
+            ],
+            time: 8.0,
+        },
+        ProtoRecipe {
+            name: "Modular Armor",
+            aliases: vec![
+                "Basic Mdoular Armor",
+            ],
+            inputs: vec![
+                (Resource::AdvancedCircuit, 30.0),
+                (Resource::SteelPlate, 50.0),
+            ],
+            outputs: vec![
+                (Resource::ModularArmor, 1.0),
+            ],
+            time: 15.0,
+        },
+        ProtoRecipe {
+            name: "Power Armor",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::ElectricEngineUnit, 20.0),
+                (Resource::ProcessingUnit, 40.0),
+                (Resource::SteelPlate, 40.0),
+            ],
+            outputs: vec![
+                (Resource::PowerArmor, 1.0),
+            ],
+            time: 20.0,
+        },
+        ProtoRecipe {
+            name: "Power Armor Mk2",
+            aliases: vec![
+                "Power Armor 2",
+                "Power Armor Mk 2",
+            ],
+            inputs: vec![
+                (Resource::EfficiencyModule3, 5.0),
+                (Resource::ProcessingUnit, 40.0),
+                (Resource::SpeedModule3, 5.0),
+                (Resource::SteelPlate, 40.0),
+            ],
+            outputs: vec![
+                (Resource::PowerArmor2, 1.0),
+            ],
+            time: 25.0,
+        },
+        ProtoRecipe {
+            name: "Night Vision",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::AdvancedCircuit, 5.0),
+                (Resource::SteelPlate, 10.0),
+            ],
+            outputs: vec![
+                (Resource::NightVision, 1.0),
+            ],
+            time: 10.0,
+        },
+        ProtoRecipe {
+            name: "Battery Mk1",
+            aliases: vec![
+                "Battery Mk 1",
+            ],
+            inputs: vec![
+                (Resource::Battery, 5.0),
+                (Resource::SteelPlate, 10.0),
+            ],
+            outputs: vec![
+                (Resource::BatteryMk1, 1.0),
+            ],
+            time: 10.0,
+        },
+        ProtoRecipe {
+            name: "Battery Mk2",
+            aliases: vec![
+                "Battery Mk 2",
+            ],
+            inputs: vec![
+                (Resource::BatteryMk1, 10.0),
+                (Resource::ProcessingUnit, 20.0),
+            ],
+            outputs: vec![
+                (Resource::BatteryMk2, 1.0),
+            ],
+            time: 10.0,
+        },
+        ProtoRecipe {
+            name: "Energy Shield",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::AdvancedCircuit, 5.0),
+                (Resource::SteelPlate, 10.0),
+            ],
+            outputs: vec![
+                (Resource::EnergyShield, 1.0),
+            ],
+            time: 10.0,
+        },
+        ProtoRecipe {
+            name: "Energy Shield Mk2",
+            aliases: vec![
+                "Energy Shield 2",
+            ],
+            inputs: vec![
+                (Resource::EnergyShield, 10.0),
+                (Resource::ProcessingUnit, 10.0),
+            ],
+            outputs: vec![
+                (Resource::EnergyShield2, 1.0),
+            ],
+            time: 10.0,
+        },
+        ProtoRecipe {
+            name: "Portable Solar Panel",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::AdvancedCircuit, 1.0),
+                (Resource::SolarPanel, 5.0),
+                (Resource::SteelPlate, 5.0),
+            ],
+            outputs: vec![
+                (Resource::PortableSolarPanel, 1.0),
+            ],
+            time: 10.0,
+        },
+        ProtoRecipe {
+            name: "Portable Fusion Reactor",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::ProcessingUnit, 250.0),
+            ],
+            outputs: vec![
+                (Resource::PortableFusionReactor, 1.0),
+            ],
+            time: 10.0,
+        },
+        ProtoRecipe {
+            name: "Personal Laser Defense",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::LaserTurret, 5.0),
+                (Resource::ProcessingUnit, 1.0),
+                (Resource::SteelPlate, 5.0),
+            ],
+            outputs: vec![
+                (Resource::PersonalLaserDefense, 1.0),
+            ],
+            time: 10.0,
+        },
+        ProtoRecipe {
+            name: "Discharge Defense",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::LaserTurret, 10.0),
+                (Resource::ProcessingUnit, 5.0),
+                (Resource::SteelPlate, 20.0),
+            ],
+            outputs: vec![
+                (Resource::DischargeDefense, 1.0),
+            ],
+            time: 10.0,
+        },
+        ProtoRecipe {
+            name: "Exoskeleton",
+            aliases: vec![
+                "Basic Exoskeleton Equipment",
+            ],
+            inputs: vec![
+                (Resource::ElectricEngineUnit, 30.0),
+                (Resource::ProcessingUnit, 10.0),
+                (Resource::SteelPlate, 20.0),
+            ],
+            outputs: vec![
+                (Resource::Exoskeleton, 1.0),
+            ],
+            time: 10.0,
+        },
+        ProtoRecipe {
+            name: "Personal Roboport",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::AdvancedCircuit, 10.0),
+                (Resource::Battery, 45.0),
+                (Resource::IronGearWheel, 40.0),
+                (Resource::SteelPlate, 20.0),
+            ],
+            outputs: vec![
+                (Resource::PersonalRoboport, 1.0),
+            ],
+            time: 10.0,
+        },
+        ProtoRecipe {
+            name: "Logistic Robot",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::AdvancedCircuit, 2.0),
+                (Resource::FlyingRobotFrame, 1.0),
+            ],
+            outputs: vec![
+                (Resource::LogisticRobot, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Construction Robot",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::ElectronicCircuit, 2.0),
+                (Resource::FlyingRobotFrame, 1.0),
+            ],
+            outputs: vec![
+                (Resource::ConstructionRobot, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Roboport",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::AdvancedCircuit, 45.0),
+                (Resource::IronGearWheel, 45.0),
+                (Resource::SteelPlate, 45.0),
+            ],
+            outputs: vec![
+                (Resource::Roboport, 1.0),
+            ],
+            time: 10.0,
+        },
     ];
 
     static ref MODULE_NAMES : Vec<(Module, &'static str)> = vec![
@@ -1698,7 +1952,6 @@ impl Modifiers {
 #[derive(Debug, Clone)]
 struct ProtoBuilding<'a> {
     name: &'a str,
-    recipes: Vec<&'a str>,
     energy_consumption: f32,
     crafting_speed: f32,
 }
