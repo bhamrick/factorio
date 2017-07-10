@@ -1,0 +1,20 @@
+Inputs
+    Copper Plate: copper_in
+    Iron Plate: iron_in
+Outputs
+    Red Science: science_out
+
+Assembling Machine 2
+    Iron Gear Wheel
+    Inputs
+        Iron Plate: iron_in
+    Outputs
+        Iron Gear Wheel: gears
+
+Assembling Machine 2
+    Red Science
+    Inputs
+        Copper Plate: copper_in
+        Iron Gear Wheel: gears
+    Outputs
+        Red Science: science_out
