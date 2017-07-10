@@ -1,0 +1,62 @@
+Inputs
+    Coal: coal_in
+    Copper Plate: copper_in
+    Iron Plate: iron_in
+    Steel Plate: steel_in
+Outputs
+    Military Science: science_out
+Targets
+    science_out: 1.0
+
+Assembling Machine 2
+    Grenade
+    Inputs
+        Coal: coal_in
+        Iron Plate: iron_in
+    Outputs
+        Grenade: grenades
+
+Assembling Machine 2
+    Iron Gear Wheel
+    Modules
+        Productivity 1: 3
+    Inputs
+        Iron Plate: iron_in
+    Outputs
+        Iron Gear Wheel: gears
+
+Assembling Machine 2
+    Gun Turret
+    Inputs
+        Copper Plate: copper_in
+        Iron Gear Wheel: gears
+        Iron Plate: iron_in
+    Outputs
+        Gun Turret: turrets
+
+Assembling Machine 2
+    Firearm Magazine
+    Inputs
+        Iron Plate: iron_in
+    Outputs
+        Firearm Magazine: firearm_mags
+
+Assembling Machine 2
+    Piercing Rounds Magazine
+    Inputs
+        Copper Plate: copper_in
+        Firearm Magazine: firearm_mags
+        Steel Plate: steel_in
+    Outputs
+        Piercing Rounds Magazine: piercing_mags
+
+Assembling Machine 2
+    Military Science
+    Modules
+        Productivity 1: 3
+    Inputs
+        Grenade: grenades
+        Gun Turret: turrets
+        Piercing Rounds Magazine: piercing_mags
+    Outputs
+        Military Science: science_out

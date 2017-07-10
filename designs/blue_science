@@ -1,0 +1,74 @@
+Inputs
+    Copper Plate: copper_in
+    Iron Plate: iron_in
+    Plastic Bar: plastic_in
+    Steel Plate: steel_in
+Outputs
+    Blue Science: science_out
+Targets
+    science_out: 1.0
+
+Assembling Machine 2
+    Copper Cable
+    Inputs
+        Copper Plate: copper_in
+    Outputs
+        Copper Cable: copper_wires
+
+Assembling Machine 2
+    Iron Gear Wheel
+    Inputs
+        Iron Plate: iron_in
+    Outputs
+        Iron Gear Wheel: gears
+
+Assembling Machine 2
+    Electronic Circuit
+    Inputs
+        Copper Cable: copper_wires
+        Iron Plate: iron_in
+    Outputs
+        Electronic Circuit: green_circuits
+
+Assembling Machine 2
+    Advanced Circuit
+    Inputs
+        Copper Cable: copper_wires
+        Electronic Circuit: green_circuits
+        Plastic Bar: plastic_in
+    Outputs
+        Advanced Circuit: red_circuits
+
+Assembling Machine 2
+    Electric Mining Drill
+    Inputs
+        Electronic Circuit: green_circuits
+        Iron Gear Wheel: gears
+        Iron Plate: iron_in
+    Outputs
+        Electric Mining Drill: drills
+
+Assembling Machine 2
+    Pipe
+    Inputs
+        Iron Plate: iron_in
+    Outputs
+        Pipe: pipes
+
+Assembling Machine 2
+    Engine Unit
+    Inputs
+        Iron Gear Wheel: gears
+        Pipe: pipes
+        Steel Plate: steel_in
+    Outputs
+        Engine Unit: engines
+
+Assembling Machine 2
+    Blue Science
+    Inputs
+        Advanced Circuit: red_circuits
+        Electric Mining Drill: drills
+        Engine Unit: engines
+    Outputs
+        Blue Science: science_out
