@@ -1971,6 +1971,316 @@ lazy_static! {
             ],
             time: 0.5,
         },
+        ProtoRecipe {
+            name: "Wooden Chest",
+            aliases: vec![
+                "Wood Chest",
+            ],
+            inputs: vec![
+                (Resource::Wood, 4.0),
+            ],
+            outputs: vec![
+                (Resource::WoodenChest, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Iron Chest",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::IronPlate, 8.0),
+            ],
+            outputs: vec![
+                (Resource::IronChest, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Steel Chest",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::SteelPlate, 8.0),
+            ],
+            outputs: vec![
+                (Resource::SteelChest, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Active Provider Chest",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::AdvancedCircuit, 1.0),
+                (Resource::ElectronicCircuit, 3.0),
+                (Resource::SteelChest, 1.0),
+            ],
+            outputs: vec![
+                (Resource::ActiveProviderChest, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Passive Provider Chest",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::AdvancedCircuit, 1.0),
+                (Resource::ElectronicCircuit, 3.0),
+                (Resource::SteelChest, 1.0),
+            ],
+            outputs: vec![
+                (Resource::PassiveProviderChest, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Storage Chest",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::AdvancedCircuit, 1.0),
+                (Resource::ElectronicCircuit, 3.0),
+                (Resource::SteelChest, 1.0),
+            ],
+            outputs: vec![
+                (Resource::StorageChest, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Requester Chest",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::AdvancedCircuit, 1.0),
+                (Resource::ElectronicCircuit, 3.0),
+                (Resource::SteelChest, 1.0),
+            ],
+            outputs: vec![
+                (Resource::RequesterChest, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Wall",
+            aliases: vec![
+                "Stone Wall",
+            ],
+            inputs: vec![
+                (Resource::StoneBrick, 5.0),
+            ],
+            outputs: vec![
+                (Resource::Wall, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Gate",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::ElectronicCircuit, 2.0),
+                (Resource::SteelPlate, 2.0),
+                (Resource::Wall, 1.0),
+            ],
+            outputs: vec![
+                (Resource::Gate, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Gun Turret",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::CopperPlate, 10.0),
+                (Resource::IronGearWheel, 10.0),
+                (Resource::IronPlate, 20.0),
+            ],
+            outputs: vec![
+                (Resource::GunTurret, 1.0),
+            ],
+            time: 8.0,
+        },
+        ProtoRecipe {
+            name: "Laser Turret",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::Battery, 12.0),
+                (Resource::ElectronicCircuit, 20.0),
+                (Resource::SteelPlate, 20.0),
+            ],
+            outputs: vec![
+                (Resource::LaserTurret, 1.0),
+            ],
+            time: 20.0,
+        },
+        ProtoRecipe {
+            name: "Flamethrower Turret",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::EngineUnit, 5.0),
+                (Resource::IronGearWheel, 15.0),
+                (Resource::Pipe, 10.0),
+                (Resource::SteelPlate, 30.0),
+            ],
+            outputs: vec![
+                (Resource::FlamethrowerTurret, 1.0),
+            ],
+            time: 20.0,
+        },
+        ProtoRecipe {
+            name: "Burner Mining Drill",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::IronGearWheel, 3.0),
+                (Resource::IronPlate, 3.0),
+                (Resource::StoneFurnace, 1.0),
+            ],
+            outputs: vec![
+                (Resource::BurnerMiningDrill, 1.0),
+            ],
+            time: 2.0,
+        },
+        ProtoRecipe {
+            name: "Electric Mining Drill",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::ElectronicCircuit, 3.0),
+                (Resource::IronGearWheel, 5.0),
+                (Resource::IronPlate, 10.0),
+            ],
+            outputs: vec![
+                (Resource::ElectricMiningDrill, 1.0),
+            ],
+            time: 2.0,
+        },
+        ProtoRecipe {
+            name: "Stone Furnace",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::Stone, 5.0),
+            ],
+            outputs: vec![
+                (Resource::StoneFurnace, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Steel Furnace",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::SteelPlate, 6.0),
+                (Resource::StoneBrick, 10.0),
+            ],
+            outputs: vec![
+                (Resource::SteelFurnace, 1.0),
+            ],
+            time: 3.0,
+        },
+        ProtoRecipe {
+            name: "Electric Furnace",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::AdvancedCircuit, 5.0),
+                (Resource::SteelPlate, 10.0),
+                (Resource::StoneBrick, 10.0),
+            ],
+            outputs: vec![
+                (Resource::ElectricFurnace, 1.0),
+            ],
+            time: 5.0,
+        },
+        ProtoRecipe {
+            name: "Assembling Machine 1",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::ElectronicCircuit, 3.0),
+                (Resource::IronGearWheel, 5.0),
+                (Resource::IronPlate, 9.0),
+            ],
+            outputs: vec![
+                (Resource::AssemblingMachine1, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Assembling Machine 2",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::AssemblingMachine1, 1.0),
+                (Resource::ElectronicCircuit, 3.0),
+                (Resource::IronGearWheel, 5.0),
+                (Resource::IronPlate, 9.0),
+            ],
+            outputs: vec![
+                (Resource::AssemblingMachine2, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Assembling Machine 3",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::AssemblingMachine2, 2.0),
+                (Resource::SpeedModule1, 4.0),
+            ],
+            outputs: vec![
+                (Resource::AssemblingMachine3, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Lab",
+            aliases: vec![
+                "Research Lab",
+            ],
+            inputs: vec![
+                (Resource::ElectronicCircuit, 10.0),
+                (Resource::IronGearWheel, 10.0),
+                (Resource::TransportBelt, 4.0),
+            ],
+            outputs: vec![
+                (Resource::Lab, 1.0),
+            ],
+            time: 3.0,
+        },
+        ProtoRecipe {
+            name: "Beacon",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::AdvancedCircuit, 20.0),
+                (Resource::CopperCable, 10.0),
+                (Resource::ElectronicCircuit, 20.0),
+                (Resource::SteelPlate, 10.0),
+            ],
+            outputs: vec![
+                (Resource::Beacon, 1.0),
+            ],
+            time: 15.0,
+        },
+        ProtoRecipe {
+            name: "Radar",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::ElectronicCircuit, 5.0),
+                (Resource::IronGearWheel, 5.0),
+                (Resource::IronPlate, 10.0),
+            ],
+            outputs: vec![
+                (Resource::Radar, 1.0),
+            ],
+            time: 0.5,
+        },
+
+        // TODO: Continue at "modules"
+
+        ProtoRecipe {
+            name: "Pipe",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::IronPlate, 1.0),
+            ],
+            outputs: vec![
+                (Resource::Pipe, 1.0),
+            ],
+            time: 0.5,
+        },
     ];
 
     static ref MODULE_NAMES : Vec<(Module, &'static str)> = vec![
