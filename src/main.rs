@@ -2456,8 +2456,16 @@ fn node<'a, 'b>(input: &'a [u8], indentation: &'b [u8]) -> IResult<&'a [u8], Dat
 }
 
 fn main() {
+    let args : Vec<String> = std::env::args().collect();
+    let fname = if args.len() == 2 {
+        args[1].clone()
+    } else {
+        println!("Usage: {} filename", args[0]);
+        return;
+    };
+
     let mut contents = Vec::new();
-    let mut input = File::open("coal_to_solid").unwrap();
+    let mut input = File::open(fname).unwrap();
     input.read_to_end(&mut contents).unwrap();
 
     let clean_contents = clean(contents);
