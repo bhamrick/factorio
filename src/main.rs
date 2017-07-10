@@ -1737,6 +1737,240 @@ lazy_static! {
             ],
             time: 10.0,
         },
+        ProtoRecipe {
+            name: "Transport Belt",
+            aliases: vec![
+                "Yellow Transport Belt",
+                "Yellow Belt",
+            ],
+            inputs: vec![
+                (Resource::IronGearWheel, 1.0),
+                (Resource::IronPlate, 1.0),
+            ],
+            outputs: vec![
+                (Resource::TransportBelt, 2.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Underground Belt",
+            aliases: vec![
+                "Yellow Underground Belt",
+                "Yellow Underground",
+            ],
+            inputs: vec![
+                (Resource::IronPlate, 10.0),
+                (Resource::TransportBelt, 5.0),
+            ],
+            outputs: vec![
+                (Resource::UndergroundBelt, 2.0),
+            ],
+            time: 1.0,
+        },
+        ProtoRecipe {
+            name: "Splitter",
+            aliases: vec![
+                "Basic Splitter",
+                "Yellow Splitter",
+            ],
+            inputs: vec![
+                (Resource::ElectronicCircuit, 5.0),
+                (Resource::IronPlate, 5.0),
+                (Resource::TransportBelt, 4.0),
+            ],
+            outputs: vec![
+                (Resource::Splitter, 1.0),
+            ],
+            time: 1.0,
+        },
+        ProtoRecipe {
+            name: "Fast Transport Belt",
+            aliases: vec![
+                "Red Transport Belt",
+                "Red Belt",
+                "Fast Belt",
+            ],
+            inputs: vec![
+                (Resource::IronGearWheel, 5.0),
+                (Resource::TransportBelt, 1.0),
+            ],
+            outputs: vec![
+                (Resource::FastTransportBelt, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Fast Underground Belt",
+            aliases: vec![
+                "Fast Underground",
+                "Red Underground Belt",
+                "Red Underground",
+            ],
+            inputs: vec![
+                (Resource::IronGearWheel, 40.0),
+                (Resource::UndergroundBelt, 2.0),
+            ],
+            outputs: vec![
+                (Resource::FastUndergroundBelt, 2.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Fast Splitter",
+            aliases: vec![
+                "Red Splitter",
+            ],
+            inputs: vec![
+                (Resource::ElectronicCircuit, 10.0),
+                (Resource::IronGearWheel, 10.0),
+                (Resource::Splitter, 1.0),
+            ],
+            outputs: vec![
+                (Resource::FastSplitter, 1.0),
+            ],
+            time: 2.0,
+        },
+        ProtoRecipe {
+            name: "Express Transport Belt",
+            aliases: vec![
+                "Blue Transport Belt",
+                "Express Belt",
+                "Blue Belt",
+            ],
+            inputs: vec![
+                (Resource::FastTransportBelt, 1.0),
+                (Resource::IronGearWheel, 10.0),
+                (Resource::Lubricant, 20.0),
+            ],
+            outputs: vec![
+                (Resource::ExpressTransportBelt, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Express Underground Belt",
+            aliases: vec![
+                "Express Underground",
+                "Blue Underground Belt",
+                "Blue Underground",
+            ],
+            inputs: vec![
+                (Resource::FastUndergroundBelt, 2.0),
+                (Resource::IronGearWheel, 80.0),
+                (Resource::Lubricant, 40.0),
+            ],
+            outputs: vec![
+                (Resource::ExpressUndergroundBelt, 2.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Express Splitter",
+            aliases: vec![
+                "Blue Splitter",
+            ],
+            inputs: vec![
+                (Resource::AdvancedCircuit, 10.0),
+                (Resource::FastSplitter, 1.0),
+                (Resource::IronGearWheel, 10.0),
+                (Resource::Lubricant, 80.0),
+            ],
+            outputs: vec![
+                (Resource::ExpressSplitter, 1.0),
+            ],
+            time: 2.0,
+        },
+        ProtoRecipe {
+            name: "Burner Inserter",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::IronGearWheel, 1.0),
+                (Resource::IronPlate, 1.0),
+            ],
+            outputs: vec![
+                (Resource::BurnerInserter, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Inserter",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::ElectronicCircuit, 1.0),
+                (Resource::IronGearWheel, 1.0),
+                (Resource::IronPlate, 1.0),
+            ],
+            outputs: vec![
+                (Resource::Inserter, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Long Handed Inserter",
+            aliases: vec![
+                "Long Inserter",
+            ],
+            inputs: vec![
+                (Resource::Inserter, 1.0),
+                (Resource::IronGearWheel, 1.0),
+                (Resource::IronPlate, 1.0),
+            ],
+            outputs: vec![
+                (Resource::LongHandedInserter, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Fast Inserter",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::ElectronicCircuit, 2.0),
+                (Resource::Inserter, 1.0),
+                (Resource::IronPlate, 2.0),
+            ],
+            outputs: vec![
+                (Resource::FastInserter, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Filter Inserter",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::ElectronicCircuit, 4.0),
+                (Resource::FastInserter, 1.0),
+            ],
+            outputs: vec![
+                (Resource::FilterInserter, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Stack Inserter",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::AdvancedCircuit, 1.0),
+                (Resource::ElectronicCircuit, 15.0),
+                (Resource::FastInserter, 1.0),
+                (Resource::IronGearWheel, 15.0),
+            ],
+            outputs: vec![
+                (Resource::StackInserter, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Stack Filter Inserter",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::ElectronicCircuit, 5.0),
+                (Resource::StackInserter, 1.0),
+            ],
+            outputs: vec![
+                (Resource::StackFilterInserter, 1.0),
+            ],
+            time: 0.5,
+        },
     ];
 
     static ref MODULE_NAMES : Vec<(Module, &'static str)> = vec![
@@ -2044,8 +2278,7 @@ struct Design<'a> {
     buildings: Vec<Building<'a>>,
     input_lines: HashSet<&'a str>,
     output_lines: HashSet<&'a str>,
-    normalized_var: Option<usize>,
-    normalized_value: f32,
+    targets: Vec<(&'a str, f32)>,
     next_index: usize,
 }
 
@@ -2056,8 +2289,7 @@ impl<'a> Design<'a> {
             buildings: Vec::new(),
             input_lines: HashSet::new(),
             output_lines: HashSet::new(),
-            normalized_var: None,
-            normalized_value: 1.0,
+            targets: Vec::new(),
             next_index: 0,
         }
     }
@@ -2110,21 +2342,32 @@ impl<'a> Design<'a> {
                         }
                         let resource_line = design.get_line(resource_type, output_line.value)?;
                         design.output_lines.insert(resource_line.name);
-                        if design.normalized_var == None {
-                            design.normalized_var = Some(resource_line.index);
-                        }
+                    }
+                }
+            } else if datum.value == "Targets" {
+                // Read target values
+                for target_datum in datum.children {
+                    let target_line_name = target_datum.value;
+                    if target_datum.children.len() == 1 {
+                        let target_val = match target_datum.children[0].value.parse() {
+                            Ok(v) => v,
+                            Err(_) => return Err(InputError::new("Invalid target value")),
+                        };
+                        design.targets.push((target_line_name, target_val));
+                    } else {
+                        return Err(InputError::new("Malformed target value"));
                     }
                 }
             } else {
                 // Read a building description
                 let proto_building = ProtoBuilding::from_name(datum.value)
-                    .ok_or(InputError::new("Unknown building"))?;
+                    .ok_or(InputError::new(&format!("Unknown building: {}", datum.value)))?;
                 if datum.children.is_empty() {
                     return Err(InputError::new("Found building with no recipe"));
                 }
                 let recipe_name = datum.children[0].value;
                 let proto_recipe = ProtoRecipe::from_name(recipe_name)
-                    .ok_or(InputError::new("Unknown recipe"))?;
+                    .ok_or(InputError::new(&format!("Unknown recipe: {}", recipe_name)))?;
                 // TODO: Check that recipe is allowed in the building
 
                 let mut required_inputs : HashMap<Resource, f32> = proto_recipe.inputs.iter().cloned().collect();
@@ -2280,13 +2523,28 @@ impl<'a> Design<'a> {
                 rhs_data.push(0.0);
             }
         }
-        // Equation to normalize the result
-        let mut norm_eq = Vec::new();
-        let norm_var_index = self.normalized_var.ok_or(AnalyzeError::new("No normalized variable set"))?;
-        norm_eq.resize(num_variables, 0.0);
-        norm_eq[norm_var_index] = 1.0;
-        matrix_data.extend(norm_eq.iter().cloned());
-        rhs_data.push(self.normalized_value);
+        // Equations to normalize the result
+        if self.targets.is_empty() {
+            // Default normalization sets first output to 1.0
+            let first_output_name = self.output_lines.iter().nth(0).ok_or(AnalyzeError::new("No outputs to normalize!"))?;
+            let first_output_line = self.resource_lines.get(first_output_name)
+                .ok_or(AnalyzeError::new("No line for first output"))?;
+            let mut norm_eq = Vec::new();
+            norm_eq.resize(num_variables, 0.0);
+            norm_eq[first_output_line.index] = 1.0;
+            matrix_data.extend(norm_eq.iter().cloned());
+            rhs_data.push(1.0);
+        } else {
+            for &(line_name, target_val) in self.targets.iter() {
+                let mut norm_eq = Vec::new();
+                let target_line = self.resource_lines.get(line_name)
+                    .ok_or(AnalyzeError::new("No such target line"))?;
+                norm_eq.resize(num_variables, 0.0);
+                norm_eq[target_line.index] = 1.0;
+                matrix_data.extend(norm_eq.iter().cloned());
+                rhs_data.push(target_val);
+            }
+        }
 
         let matrix = Matrix::new(rhs_data.len(), num_variables, matrix_data);
         let rhs = Vector::new(rhs_data);

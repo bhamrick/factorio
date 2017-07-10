@@ -1,0 +1,54 @@
+Inputs
+    Iron Plate: iron_in
+    Copper Plate: copper_in
+Outputs
+    Green Science: science_out
+Targets
+    science_out: 1.0
+
+Assembling Machine 2
+    Iron Gear Wheel
+    Inputs
+        Iron Plate: iron_in
+    Outputs
+        Iron Gear Wheel: gears
+
+Assembling Machine 2
+    Transport Belt
+    Inputs
+        Iron Plate: iron_in
+        Iron Gear Wheel: gears
+    Outputs
+        Transport Belt: belts
+
+Assembling Machine 2
+    Copper Cable
+    Inputs
+        Copper Plate: copper_in
+    Outputs
+        Copper Cable: copper_wires
+
+Assembling Machine 2
+    Green Circuit
+    Inputs
+        Copper Cable: copper_wires
+        Iron Plate: iron_in
+    Outputs
+        Green Circuit: circuits
+
+Assembling Machine 2
+    Inserter
+    Inputs
+        Green Circuit: circuits
+        Iron Gear Wheel: gears
+        Iron Plate: iron_in
+    Outputs
+        Inserter: inserters
+
+Assembling Machine 2
+    Green Science
+    Inputs
+        Transport Belt: belts
+        Inserter: inserters
+    Outputs
+        Green Science: science_out

@@ -3,6 +3,8 @@ Inputs
     Iron Plate: iron_in
 Outputs
     Red Science: science_out
+Targets
+    science_out: 1.0
 
 Assembling Machine 2
     Iron Gear Wheel
