@@ -2611,7 +2611,7 @@ impl<'a> Design<'a> {
                 if existing_line.resource_type == resource_type {
                     Ok(existing_line.clone())
                 } else {
-                    Err(InputError::new("Resource type mismatch"))
+                    Err(InputError::new(&format!("Resource type mismatch: {}", name)))
                 }
             },
             Entry::Vacant(ent) => {

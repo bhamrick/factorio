@@ -1,0 +1,98 @@
+Inputs
+    Iron Plate: iron_in
+    Steel Plate: steel_in
+    Copper Plate: copper_in
+    Lubricant: lube_in
+    Sulfuric Acid: sulfuric_in
+Outputs
+    Construction Robot: construction_bots
+Targets
+    construction_bots: 0.1
+
+Assembling Machine 2
+    Iron Gear Wheel
+    Modules
+        Productivity 1: 2
+    Inputs
+        Iron Plate: iron_in
+    Outputs
+        Iron Gear Wheel: gears
+
+Assembling Machine 2
+    Pipe
+    Inputs
+        Iron Plate: iron_in
+    Outputs
+        Pipe: pipes
+
+Assembling Machine 2
+    Engine Unit
+    Modules
+        Productivity 1: 2
+    Inputs
+        Steel Plate: steel_in
+        Iron Gear Wheel: gears
+        Pipe: pipes
+    Outputs
+        Engine Unit: engines
+
+Assembling Machine 2
+    Copper Cable
+    Modules
+        Productivity 1: 2
+    Inputs
+        Copper Plate: copper_in
+    Outputs
+        Copper Cable: wires
+
+Assembling Machine 2
+    Electronic Circuit
+    Modules
+        Productivity 1: 2
+    Inputs
+        Iron Plate: iron_in
+        Copper Cable: wires
+    Outputs
+        Electronic Circuit: green_circuits
+
+Assembling Machine 2
+    Electric Engine Unit
+    Modules
+        Productivity 1: 2
+    Inputs
+        Engine Unit: engines
+        Electronic Circuit: green_circuits
+        Lubricant: lube_in
+    Outputs
+        Electric Engine Unit: electric_engines
+
+Chemical Plant
+    Battery
+    Modules
+        Productivity 1: 3
+    Inputs
+        Iron Plate: iron_in
+        Copper Plate: copper_in 
+        Sulfuric Acid: sulfuric_in
+    Outputs
+        Battery: batteries
+
+Assembling Machine 2
+    Flying Robot Frame
+    Modules
+        Productivity 1: 2
+    Inputs
+        Electric Engine Unit: electric_engines
+        Battery: batteries
+        Steel Plate: steel_in
+        Electronic Circuit: green_circuits
+    Outputs
+        Flying Robot Frame: frames
+
+Assembling Machine 2
+    Construction Robot
+    Inputs
+        Flying Robot Frame: frames
+        Electronic Circuit: green_circuits
+    Outputs
+        Construction Robot: construction_bots

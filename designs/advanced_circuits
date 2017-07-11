@@ -1,0 +1,49 @@
+# Advanced circuits in the presence of productivity modules...
+
+Inputs
+    Iron Plate: iron_in
+    Copper Plate: copper_in
+    Plastic Bar: plastic_in
+Outputs
+    Advanced Circuit: red_circuits
+Targets
+    red_circuits: 5.0
+
+Assembling Machine 2
+    Copper Cable
+    Modules
+        Productivity 1: 3
+    Inputs
+        Copper Plate: copper_in
+    Outputs
+        Copper Cable: copper_wires_green
+
+Assembling Machine 2
+    Electronic Circuit
+    Modules
+        Productivity 1: 3
+    Inputs
+        Copper Cable: copper_wires_green
+        Iron Plate: iron_in
+    Outputs
+        Electronic Circuit: green_circuits
+
+Assembling Machine 2
+    Copper Cable
+    Modules
+        Productivity 1: 3
+    Inputs
+        Copper Plate: copper_in
+    Outputs
+        Copper Cable: copper_wires_red
+
+Assembling Machine 2
+    Advanced Circuit
+    Modules
+        Productivity 1: 3
+    Inputs
+        Copper Cable: copper_wires_red
+        Electronic Circuit: green_circuits
+        Plastic Bar: plastic_in
+    Outputs
+        Advanced Circuit: red_circuits
