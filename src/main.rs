@@ -24,6 +24,8 @@ enum Resource {
     IronOre,
     CopperOre,
     UraniumOre,
+    Uranium238,
+    Uranium235,
     Stone,
     RawFish,
     Water,
@@ -56,6 +58,9 @@ enum Resource {
     SpaceSciencePack,
     EmptyBarrel,
     Explosives,
+
+    Concrete,
+    HazardConcrete,
 
     // Chemicals
     Petroleum,
@@ -100,13 +105,16 @@ enum Resource {
     // Ammo
     FirearmMagazine,
     PiercingRoundsMagazine,
+    UraniumRoundsMagazine,
     ShotgunShells,
     PiercingShotgunShells,
     Rocket,
     ExplosiveRocket,
     FlamethrowerAmmo,
     CannonShell,
+    UraniumCannonShell,
     ExplosiveCannonShell,
+    ExplosiveUraniumCannonShell,
 
     // Armor
     LightArmor,
@@ -209,7 +217,7 @@ enum Resource {
     TrainStop,
     RailSignal,
     RailChainSignal,
-    DieselLocomotive,
+    Locomotive,
     CargoWagon,
     FluidWagon,
 
@@ -221,7 +229,7 @@ enum Resource {
     OilRefinery,
     ChemicalPlant,
     Pumpjack,
-    SmallPump,
+    Pump,
 
     // Circuit Network
     Lamp,
@@ -240,6 +248,15 @@ enum Resource {
     RocketFuel,
     RocketPart,
     Satellite,
+
+    // Nuclear Power
+    Centrifuge,
+    HeatExchanger,
+    HeatPipe,
+    NuclearReactor,
+    SteamTurbine,
+    UraniumFuelCell,
+    UsedUraniumFuelCell,
 }
 
 lazy_static! {
@@ -250,6 +267,10 @@ lazy_static! {
         (Resource::IronOre, "Iron Ore"),
         (Resource::CopperOre, "Copper Ore"),
         (Resource::UraniumOre, "Uranium Ore"),
+        (Resource::Uranium238, "Uranium-238"),
+        (Resource::Uranium238, "Uranium 238"),
+        (Resource::Uranium235, "Uranium-235"),
+        (Resource::Uranium235, "Uranium 235"),
         (Resource::Stone, "Stone"),
         (Resource::RawFish, "Raw Fish"),
         (Resource::Water, "Water"),
@@ -281,7 +302,7 @@ lazy_static! {
         (Resource::AdvancedCircuit, "Advanced Circuit"),
         (Resource::AdvancedCircuit, "Red Circuit"),
         (Resource::ProcessingUnit, "Processing Unit"),
-        (Resource::ProcessingUnit, "Blue Unit"),
+        (Resource::ProcessingUnit, "Blue Circuit"),
         (Resource::EngineUnit, "Engine Unit"),
         (Resource::EngineUnit, "Engine"),
         (Resource::ElectricEngineUnit, "Electric Engine Unit"),
@@ -309,6 +330,9 @@ lazy_static! {
         (Resource::SpaceSciencePack, "White Science"),
         (Resource::EmptyBarrel, "Empty Barrel"),
         (Resource::Explosives, "Explosives"),
+
+        (Resource::Concrete, "Concrete"),
+        (Resource::HazardConcrete, "Hazard Concrete"),
 
         // Chemicals
         (Resource::Petroleum, "Petroleum"),
@@ -361,13 +385,18 @@ lazy_static! {
         (Resource::PiercingRoundsMagazine, "Piercing Rounds Magazine"),
         (Resource::PiercingRoundsMagazine, "Piercing Magazine"),
         (Resource::PiercingRoundsMagazine, "Piercing Ammo"),
+        (Resource::UraniumRoundsMagazine, "Uranium Rounds Magazine"),
+        (Resource::UraniumRoundsMagazine, "Uranium Magazine"),
+        (Resource::UraniumRoundsMagazine, "Uranium Ammo"),
         (Resource::ShotgunShells, "Shotgun Shells"),
         (Resource::PiercingShotgunShells, "Piercing Shotgun Shells"),
         (Resource::Rocket, "Rocket"),
         (Resource::ExplosiveRocket, "Explosive Rocket"),
         (Resource::FlamethrowerAmmo, "Flamethrower Ammo"),
         (Resource::CannonShell, "Cannon Shell"),
+        (Resource::UraniumCannonShell, "Uranium Cannon Shell"),
         (Resource::ExplosiveCannonShell, "Explosive Cannon Shell"),
+        (Resource::ExplosiveUraniumCannonShell, "Explosive Uranium Cannon Shell"),
 
         // Armor
         (Resource::LightArmor, "Light Armor"),
@@ -496,8 +525,8 @@ lazy_static! {
         (Resource::TrainStop, "Train Stop"),
         (Resource::RailSignal, "Rail Signal"),
         (Resource::RailChainSignal, "Rail Chain Signal"),
-        (Resource::DieselLocomotive, "Diesel Locomotive"),
-        (Resource::DieselLocomotive, "Locomotive"),
+        (Resource::Locomotive, "Locomotive"),
+        (Resource::Locomotive, "Diesel Locomotive"),
         (Resource::CargoWagon, "Cargo Wagon"),
         (Resource::FluidWagon, "Fluid Wagon"),
 
@@ -510,7 +539,8 @@ lazy_static! {
         (Resource::OilRefinery, "Oil Refinery"),
         (Resource::ChemicalPlant, "Chemical Plant"),
         (Resource::Pumpjack, "Pumpjack"),
-        (Resource::SmallPump, "Small Pump"),
+        (Resource::Pump, "Pump"),
+        (Resource::Pump, "Small Pump"),
 
         // Circuit Network
         (Resource::Lamp, "Lamp"),
@@ -529,6 +559,16 @@ lazy_static! {
         (Resource::RocketFuel, "Rocket Fuel"),
         (Resource::RocketPart, "Rocket Part"),
         (Resource::Satellite, "Satellite"),
+
+        // Nuclear Power
+        (Resource::Centrifuge, "Centrifuge"),
+        (Resource::HeatExchanger, "Heat Exchanger"),
+        (Resource::HeatPipe, "Heat Pipe"),
+        (Resource::NuclearReactor, "Nuclear Reactor"),
+        (Resource::SteamTurbine, "Steam Turbine"),
+        (Resource::UraniumFuelCell, "Uranium Fuel Cell"),
+        (Resource::UsedUraniumFuelCell, "Used Up Uranium Fuel Cell"),
+        (Resource::UsedUraniumFuelCell, "Used Uranium Fuel Cell"),
     ];
 
     static ref PROTO_BUILDINGS : Vec<ProtoBuilding<'static>> = vec![
@@ -562,6 +602,21 @@ lazy_static! {
             energy_consumption: 420.0,
             crafting_speed: 1.0,
         },
+        ProtoBuilding {
+            name: "Rocket Silo",
+            energy_consumption: 4000.0,
+            crafting_speed: 1.0,
+        },
+        ProtoBuilding {
+            name: "Centrifuge",
+            energy_consumption: 350.0,
+            crafting_speed: 0.75,
+        },
+        ProtoBuilding {
+            name: "Nuclear Reactor",
+            energy_consumption: 0.0,
+            crafting_speed: 1.0,
+        },
     ];
 
     static ref PROTO_RECIPES : Vec<ProtoRecipe<'static>> = vec![
@@ -576,6 +631,20 @@ lazy_static! {
                 (Resource::Steam, 60.0),
             ],
             time: 1.0,
+        },
+        ProtoRecipe {
+            name: "Advanced Oil Processing",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::Water, 50.0),
+                (Resource::CrudeOil, 100.0),
+            ],
+            outputs: vec![
+                (Resource::HeavyOil, 10.0),
+                (Resource::LightOil, 45.0),
+                (Resource::Petroleum, 55.0),
+            ],
+            time: 5.0,
         },
         ProtoRecipe {
             name: "Coal liquefaction",
@@ -593,14 +662,31 @@ lazy_static! {
             time: 5.0,
         },
         ProtoRecipe {
-            name: "Heavy oil cracking",
-            aliases: vec![],
+            name: "Heavy Oil Cracking",
+            aliases: vec![
+                "Heavy Oil Cracking to Light Oil"
+            ],
             inputs: vec![
                 (Resource::HeavyOil, 40.0),
                 (Resource::Water, 30.0),
             ],
             outputs: vec![
                 (Resource::LightOil, 30.0),
+            ],
+            time: 3.0,
+        },
+        ProtoRecipe {
+            name: "Light Oil Cracking",
+            aliases: vec![
+                "Light Oil Cracking to Petroleum",
+                "Light Oil Cracking to Petroleum Gas",
+            ],
+            inputs: vec![
+                (Resource::Water, 30.0),
+                (Resource::LightOil, 30.0),
+            ],
+            outputs: vec![
+                (Resource::Petroleum, 20.0),
             ],
             time: 3.0,
         },
@@ -664,6 +750,19 @@ lazy_static! {
             ],
             outputs: vec![
                 (Resource::Sulfur, 2.0),
+            ],
+            time: 1.0,
+        },
+        ProtoRecipe {
+            name: "Sulfuric Acid",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::Sulfur, 5.0),
+                (Resource::IronPlate, 1.0),
+                (Resource::Water, 100.0),
+            ],
+            outputs: vec![
+                (Resource::SulfuricAcid, 50.0),
             ],
             time: 1.0,
         },
@@ -1125,6 +1224,30 @@ lazy_static! {
             time: 5.0,
         },
         ProtoRecipe {
+            name: "Concrete",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::IronOre, 1.0),
+                (Resource::StoneBrick, 5.0),
+                (Resource::Water, 100.0),
+            ],
+            outputs: vec![
+                (Resource::Concrete, 10.0),
+            ],
+            time: 10.0,
+        },
+        ProtoRecipe {
+            name: "Hazard Concrete",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::Concrete, 10.0),
+            ],
+            outputs: vec![
+                (Resource::HazardConcrete, 10.0),
+            ],
+            time: 0.25,
+        },
+        ProtoRecipe {
             name: "Iron Axe",
             aliases: vec![],
             inputs: vec![
@@ -1398,6 +1521,22 @@ lazy_static! {
             time: 3.0,
         },
         ProtoRecipe {
+            name: "Uranium Rounds Magazine",
+            aliases: vec![
+                "Uranium Magazine",
+                "Uranium Ammo",
+                "Uranium Rounds",
+            ],
+            inputs: vec![
+                (Resource::PiercingRoundsMagazine, 1.0),
+                (Resource::Uranium238, 1.0),
+            ],
+            outputs: vec![
+                (Resource::UraniumRoundsMagazine, 1.0),
+            ],
+            time: 10.0,
+        },
+        ProtoRecipe {
             name: "Shotgun Shells",
             aliases: vec![],
             inputs: vec![
@@ -1474,6 +1613,18 @@ lazy_static! {
             time: 8.0,
         },
         ProtoRecipe {
+            name: "Uranium Cannon Shell",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::CannonShell, 1.0),
+                (Resource::Uranium238, 1.0),
+            ],
+            outputs: vec![
+                (Resource::UraniumCannonShell, 1.0),
+            ],
+            time: 12.0,
+        },
+        ProtoRecipe {
             name: "Explosive Cannon Shell",
             aliases: vec![],
             inputs: vec![
@@ -1485,6 +1636,18 @@ lazy_static! {
                 (Resource::ExplosiveCannonShell, 1.0),
             ],
             time: 8.0,
+        },
+        ProtoRecipe {
+            name: "Explosive Uranium Cannon Shell",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::ExplosiveCannonShell, 1.0),
+                (Resource::Uranium238, 1.0),
+            ],
+            outputs: vec![
+                (Resource::ExplosiveUraniumCannonShell, 1.0),
+            ],
+            time: 12.0,
         },
         ProtoRecipe {
             name: "Light Armor",
@@ -2267,9 +2430,317 @@ lazy_static! {
             ],
             time: 0.5,
         },
-
-        // TODO: Continue at "modules"
-
+        ProtoRecipe {
+            name: "Efficiency Module 1",
+            aliases: vec![
+                "Efficiency Module",
+            ],
+            inputs: vec![
+                (Resource::ElectronicCircuit, 5.0),
+                (Resource::AdvancedCircuit, 5.0),
+            ],
+            outputs: vec![
+                (Resource::EfficiencyModule1, 1.0),
+            ],
+            time: 15.0,
+        },
+        ProtoRecipe {
+            name: "Efficiency Module 2",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::AdvancedCircuit, 5.0),
+                (Resource::EfficiencyModule1, 4.0),
+                (Resource::ProcessingUnit, 5.0),
+            ],
+            outputs: vec![
+                (Resource::EfficiencyModule2, 1.0),
+            ],
+            time: 30.0,
+        },
+        ProtoRecipe {
+            name: "Efficiency Module 3",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::AdvancedCircuit, 5.0),
+                (Resource::EfficiencyModule2, 5.0),
+                (Resource::ProcessingUnit, 5.0),
+            ],
+            outputs: vec![
+                (Resource::EfficiencyModule3, 1.0),
+            ],
+            time: 60.0,
+        },
+        ProtoRecipe {
+            name: "Speed Module 1",
+            aliases: vec![
+                "Speed Module",
+            ],
+            inputs: vec![
+                (Resource::ElectronicCircuit, 5.0),
+                (Resource::AdvancedCircuit, 5.0),
+            ],
+            outputs: vec![
+                (Resource::SpeedModule1, 1.0),
+            ],
+            time: 15.0,
+        },
+        ProtoRecipe {
+            name: "Speed Module 2",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::AdvancedCircuit, 5.0),
+                (Resource::SpeedModule1, 4.0),
+                (Resource::ProcessingUnit, 5.0),
+            ],
+            outputs: vec![
+                (Resource::SpeedModule2, 1.0),
+            ],
+            time: 30.0,
+        },
+        ProtoRecipe {
+            name: "Speed Module 3",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::AdvancedCircuit, 5.0),
+                (Resource::SpeedModule2, 5.0),
+                (Resource::ProcessingUnit, 5.0),
+            ],
+            outputs: vec![
+                (Resource::SpeedModule3, 1.0),
+            ],
+            time: 60.0,
+        },
+        ProtoRecipe {
+            name: "Productivity Module 1",
+            aliases: vec![
+                "Productivity Module",
+            ],
+            inputs: vec![
+                (Resource::ElectronicCircuit, 5.0),
+                (Resource::AdvancedCircuit, 5.0),
+            ],
+            outputs: vec![
+                (Resource::ProductivityModule1, 1.0),
+            ],
+            time: 15.0,
+        },
+        ProtoRecipe {
+            name: "Productivity Module 2",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::AdvancedCircuit, 5.0),
+                (Resource::ProductivityModule1, 4.0),
+                (Resource::ProcessingUnit, 5.0),
+            ],
+            outputs: vec![
+                (Resource::ProductivityModule2, 1.0),
+            ],
+            time: 30.0,
+        },
+        ProtoRecipe {
+            name: "Productivity Module 3",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::AdvancedCircuit, 5.0),
+                (Resource::ProductivityModule2, 5.0),
+                (Resource::ProcessingUnit, 5.0),
+            ],
+            outputs: vec![
+                (Resource::ProductivityModule3, 1.0),
+            ],
+            time: 60.0,
+        },
+        ProtoRecipe {
+            name: "Small Electric Pole",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::CopperCable, 2.0),
+                (Resource::Wood, 2.0),
+            ],
+            outputs: vec![
+                (Resource::SmallElectricPole, 2.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Medium Electric Pole",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::CopperPlate, 2.0),
+                (Resource::SteelPlate, 2.0),
+            ],
+            outputs: vec![
+                (Resource::MediumElectricPole, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Big Electric Pole",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::CopperPlate, 5.0),
+                (Resource::SteelPlate, 5.0),
+            ],
+            outputs: vec![
+                (Resource::BigElectricPole, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Substation",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::AdvancedCircuit, 5.0),
+                (Resource::CopperPlate, 5.0),
+                (Resource::SteelPlate, 10.0),
+            ],
+            outputs: vec![
+                (Resource::Substation, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Boiler",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::Pipe, 4.0),
+                (Resource::StoneFurnace, 1.0),
+            ],
+            outputs: vec![
+                (Resource::Boiler, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Steam Engine",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::IronGearWheel, 8.0),
+                (Resource::IronPlate, 10.0),
+                (Resource::Pipe, 5.0),
+            ],
+            outputs: vec![
+                (Resource::SteamEngine, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Solar Panel",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::CopperPlate, 5.0),
+                (Resource::ElectronicCircuit, 15.0),
+                (Resource::SteelPlate, 5.0),
+            ],
+            outputs: vec![
+                (Resource::SolarPanel, 1.0),
+            ],
+            time: 10.0,
+        },
+        ProtoRecipe {
+            name: "Accumulator",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::Battery, 5.0),
+                (Resource::IronPlate, 2.0),
+            ],
+            outputs: vec![
+                (Resource::Accumulator, 1.0),
+            ],
+            time: 10.0,
+        },
+        ProtoRecipe {
+            name: "Rail",
+            aliases: vec![
+                "Straight Rail",
+            ],
+            inputs: vec![
+                (Resource::IronStick, 1.0),
+                (Resource::SteelPlate, 1.0),
+                (Resource::Stone, 1.0),
+            ],
+            outputs: vec![
+                (Resource::StraightRail, 2.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Train Stop",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::ElectronicCircuit, 5.0),
+                (Resource::IronPlate, 10.0),
+                (Resource::SteelPlate, 3.0),
+            ],
+            outputs: vec![
+                (Resource::TrainStop, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Rail Signal",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::ElectronicCircuit, 1.0),
+                (Resource::IronPlate, 5.0),
+            ],
+            outputs: vec![
+                (Resource::RailSignal, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Rail Chain Signal",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::ElectronicCircuit, 1.0),
+                (Resource::IronPlate, 5.0),
+            ],
+            outputs: vec![
+                (Resource::RailChainSignal, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Locomotive",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::ElectronicCircuit, 10.0),
+                (Resource::EngineUnit, 20.0),
+                (Resource::SteelPlate, 30.0),
+            ],
+            outputs: vec![
+                (Resource::Locomotive, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Cargo Wagon",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::IronGearWheel, 10.0),
+                (Resource::IronPlate, 20.0),
+                (Resource::SteelPlate, 20.0),
+            ],
+            outputs: vec![
+                (Resource::CargoWagon, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Fluid Wagon",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::IronGearWheel, 10.0),
+                (Resource::Pipe, 8.0),
+                (Resource::SteelPlate, 16.0),
+                (Resource::StorageTank, 3.0),
+            ],
+            outputs: vec![
+                (Resource::FluidWagon, 1.0),
+            ],
+            time: 1.5,
+        },
         ProtoRecipe {
             name: "Pipe",
             aliases: vec![],
@@ -2280,6 +2751,413 @@ lazy_static! {
                 (Resource::Pipe, 1.0),
             ],
             time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Pipe to Ground",
+            aliases: vec![
+                "Pipe-to-Ground",
+            ],
+            inputs: vec![
+                (Resource::IronPlate, 5.0),
+                (Resource::Pipe, 10.0),
+            ],
+            outputs: vec![
+                (Resource::PipeToGround, 2.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Offshore Pump",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::ElectronicCircuit, 2.0),
+                (Resource::IronGearWheel, 1.0),
+                (Resource::Pipe, 1.0),
+            ],
+            outputs: vec![
+                (Resource::OffshorePump, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Storage Tank",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::IronPlate, 20.0),
+                (Resource::SteelPlate, 5.0),
+            ],
+            outputs: vec![
+                (Resource::StorageTank, 1.0),
+            ],
+            time: 3.0,
+        },
+        ProtoRecipe {
+            name: "Oil Refinery",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::ElectronicCircuit, 10.0),
+                (Resource::IronGearWheel, 10.0),
+                (Resource::Pipe, 10.0),
+                (Resource::SteelPlate, 15.0),
+                (Resource::StoneBrick, 10.0),
+            ],
+            outputs: vec![
+                (Resource::OilRefinery, 1.0),
+            ],
+            time: 10.0,
+        },
+        ProtoRecipe {
+            name: "Chemical Plant",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::ElectronicCircuit, 5.0),
+                (Resource::IronGearWheel, 5.0),
+                (Resource::Pipe, 5.0),
+                (Resource::SteelPlate, 5.0),
+            ],
+            outputs: vec![
+                (Resource::ChemicalPlant, 1.0),
+            ],
+            time: 5.0,
+        },
+        ProtoRecipe {
+            name: "Pumpjack",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::ElectronicCircuit, 5.0),
+                (Resource::IronGearWheel, 10.0),
+                (Resource::Pipe, 10.0),
+                (Resource::SteelPlate, 5.0),
+            ],
+            outputs: vec![
+                (Resource::Pumpjack, 1.0),
+            ],
+            time: 5.0,
+        },
+        ProtoRecipe {
+            name: "Pump",
+            aliases: vec![
+                "Small Pump",
+            ],
+            inputs: vec![
+                (Resource::EngineUnit, 1.0),
+                (Resource::Pipe, 1.0),
+                (Resource::SteelPlate, 1.0),
+            ],
+            outputs: vec![
+                (Resource::Pump, 1.0),
+            ],
+            time: 2.0,
+        },
+        ProtoRecipe {
+            name: "Lamp",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::ElectronicCircuit, 1.0),
+                (Resource::IronPlate, 1.0),
+                (Resource::IronStick, 3.0),
+            ],
+            outputs: vec![
+                (Resource::Lamp, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Red Wire",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::CopperCable, 1.0),
+                (Resource::ElectronicCircuit, 1.0),
+            ],
+            outputs: vec![
+                (Resource::RedWire, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Green Wire",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::CopperCable, 1.0),
+                (Resource::ElectronicCircuit, 1.0),
+            ],
+            outputs: vec![
+                (Resource::GreenWire, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Arithmetic Combinator",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::CopperCable, 5.0),
+                (Resource::ElectronicCircuit, 5.0),
+            ],
+            outputs: vec![
+                (Resource::ArithmeticCombinator, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Decider Combinator",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::CopperCable, 5.0),
+                (Resource::ElectronicCircuit, 5.0),
+            ],
+            outputs: vec![
+                (Resource::DeciderCombinator, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Constant Combinator",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::CopperCable, 5.0),
+                (Resource::ElectronicCircuit, 2.0),
+            ],
+            outputs: vec![
+                (Resource::ConstantCombinator, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Power Switch",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::CopperCable, 5.0),
+                (Resource::ElectronicCircuit, 2.0),
+                (Resource::IronPlate, 5.0),
+            ],
+            outputs: vec![
+                (Resource::PowerSwitch, 1.0),
+            ],
+            time: 2.0,
+        },
+        ProtoRecipe {
+            name: "Programmable Speaker",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::CopperCable, 5.0),
+                (Resource::ElectronicCircuit, 4.0),
+                (Resource::IronPlate, 5.0),
+            ],
+            outputs: vec![
+                (Resource::ProgrammableSpeaker, 1.0),
+            ],
+            time: 2.0,
+        },
+        ProtoRecipe {
+            name: "Rocket Silo",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::Concrete, 1000.0),
+                (Resource::ElectricEngineUnit, 200.0),
+                (Resource::Pipe, 100.0),
+                (Resource::ProcessingUnit, 200.0),
+                (Resource::SteelPlate, 1000.0),
+            ],
+            outputs: vec![
+                (Resource::RocketSilo, 1.0),
+            ],
+            time: 30.0,
+        },
+        ProtoRecipe {
+            name: "Low Density Structure",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::CopperPlate, 5.0),
+                (Resource::PlasticBar, 5.0),
+                (Resource::SteelPlate, 10.0),
+            ],
+            outputs: vec![
+                (Resource::LowDensityStructure, 1.0),
+            ],
+            time: 30.0,
+        },
+        ProtoRecipe {
+            name: "Rocket Control Unit",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::ProcessingUnit, 1.0),
+                (Resource::SpeedModule1, 1.0),
+            ],
+            outputs: vec![
+                (Resource::RocketControlUnit, 1.0),
+            ],
+            time: 30.0,
+        },
+        ProtoRecipe {
+            name: "Rocket Fuel",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::SolidFuel, 10.0),
+            ],
+            outputs: vec![
+                (Resource::RocketFuel, 1.0),
+            ],
+            time: 30.0,
+        },
+        ProtoRecipe {
+            name: "Rocket Part",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::LowDensityStructure, 10.0),
+                (Resource::RocketControlUnit, 10.0),
+                (Resource::RocketFuel, 10.0),
+            ],
+            outputs: vec![
+                (Resource::RocketPart, 1.0),
+            ],
+            time: 3.0,
+        },
+        ProtoRecipe {
+            name: "Satellite",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::Accumulator, 100.0),
+                (Resource::LowDensityStructure, 100.0),
+                (Resource::ProcessingUnit, 100.0),
+                (Resource::Radar, 5.0),
+                (Resource::RocketFuel, 50.0),
+                (Resource::SolarPanel, 100.0),
+            ],
+            outputs: vec![
+                (Resource::Satellite, 1.0),
+            ],
+            time: 3.0,
+        },
+        ProtoRecipe {
+            name: "Centrifuge",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::AdvancedCircuit, 100.0),
+                (Resource::Concrete, 100.0),
+                (Resource::IronGearWheel, 100.0),
+                (Resource::SteelPlate, 50.0),
+            ],
+            outputs: vec![
+                (Resource::Centrifuge, 1.0),
+            ],
+            time: 4.0,
+        },
+        ProtoRecipe {
+            name: "Heat Exchanger",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::CopperPlate, 100.0),
+                (Resource::Pipe, 10.0),
+                (Resource::SteelPlate, 10.0),
+            ],
+            outputs: vec![
+                (Resource::HeatExchanger, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Heat Pipe",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::CopperPlate, 20.0),
+                (Resource::SteelPlate, 10.0),
+            ],
+            outputs: vec![
+                (Resource::HeatPipe, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Nuclear Reactor",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::AdvancedCircuit, 500.0),
+                (Resource::Concrete, 500.0),
+                (Resource::CopperPlate, 500.0),
+                (Resource::SteelPlate, 500.0),
+            ],
+            outputs: vec![
+                (Resource::NuclearReactor, 1.0),
+            ],
+            time: 4.0,
+        },
+        ProtoRecipe {
+            name: "Steam Turbine",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::CopperPlate, 50.0),
+                (Resource::IronGearWheel, 50.0),
+                (Resource::Pipe, 20.0),
+            ],
+            outputs: vec![
+                (Resource::SteamTurbine, 1.0),
+            ],
+            time: 0.5,
+        },
+        ProtoRecipe {
+            name: "Uranium Fuel Cell",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::IronPlate, 10.0),
+                (Resource::Uranium235, 1.0),
+                (Resource::Uranium238, 19.0),
+            ],
+            outputs: vec![
+                (Resource::UraniumFuelCell, 10.0),
+            ],
+            time: 10.0,
+        },
+        ProtoRecipe {
+            name: "Uranium Processing",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::UraniumOre, 10.0),
+            ],
+            outputs: vec![
+                (Resource::Uranium238, 0.993),
+                (Resource::Uranium235, 0.007),
+            ],
+            time: 10.0,
+        },
+        ProtoRecipe {
+            name: "Burning Fuel Cells",
+            aliases: vec![
+                "Nuclear Power",
+            ],
+            inputs: vec![
+                (Resource::UraniumFuelCell, 1.0),
+            ],
+            outputs: vec![
+                (Resource::UsedUraniumFuelCell, 1.0),
+            ],
+            time: 200.0,
+        },
+        ProtoRecipe {
+            name: "Kovarex Enrichment Process",
+            aliases: vec![
+                "Kovarex Enrichment",
+                "Kovarex",
+            ],
+            inputs: vec![
+                (Resource::Uranium235, 40.0),
+                (Resource::Uranium238, 5.0),
+            ],
+            outputs: vec![
+                (Resource::Uranium235, 41.0),
+                (Resource::Uranium238, 2.0),
+            ],
+            time: 50.0,
+        },
+        ProtoRecipe {
+            name: "Nuclear Fuel Reprocessing",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::UsedUraniumFuelCell, 5.0),
+            ],
+            outputs: vec![
+                (Resource::Uranium238, 3.0),
+            ],
+            time: 50.0,
         },
     ];
 
@@ -2315,7 +3193,7 @@ impl Resource {
                 return Ok(resource);
             }
         }
-        Err(InputError::new("Unknown resource"))
+        Err(InputError::new(&format!("Unknown resource: {}", name)))
     }
 }
 

@@ -1,0 +1,89 @@
+Inputs
+    Iron Plate: iron_in
+    Copper Plate: copper_in
+Outputs
+    Red Belt: belts_out
+    Red Underground: undergrounds_out
+    Red Splitter: splitters_out
+Targets
+    belts_out: 1.0
+    undergrounds_out: 0.2
+    splitters_out: 0.1
+
+Assembling Machine 2
+    Iron Gear Wheel
+    Modules
+        Productivity 1: 2
+    Inputs
+        Iron Plate: iron_in
+    Outputs
+        Iron Gear Wheel: gears
+
+Assembling Machine 2
+    Copper Cable
+    Modules
+        Productivity 1: 2
+    Inputs
+        Copper Plate: copper_in
+    Outputs
+        Copper Cable: wires
+
+Assembling Machine 2
+    Green Circuit
+    Modules
+        Productivity 1: 2
+    Inputs
+        Copper Cable: wires
+        Iron Plate: iron_in
+    Outputs
+        Green Circuit: circuits
+
+Assembling Machine 2
+    Yellow Belt
+    Inputs
+        Iron Plate: iron_in
+        Iron Gear Wheel: gears
+    Outputs
+        Yellow Belt: yellow_belts
+
+Assembling Machine 2
+    Yellow Underground
+    Inputs
+        Iron Plate: iron_in
+        Yellow Belt: yellow_belts
+    Outputs
+        Yellow Underground: yellow_undergrounds
+
+Assembling Machine 2
+    Yellow Splitter
+    Inputs
+        Iron Plate: iron_in
+        Green Circuit: circuits
+        Yellow Belt: yellow_belts
+    Outputs
+        Yellow Splitter: yellow_splitters
+
+Assembling Machine 2
+    Red Belt
+    Inputs
+        Iron Gear Wheel: gears
+        Yellow Belt: yellow_belts
+    Outputs
+        Red Belt: belts_out
+
+Assembling Machine 2
+    Red Underground
+    Inputs
+        Iron Gear Wheel: gears
+        Yellow Underground: yellow_undergrounds
+    Outputs
+        Red Underground: undergrounds_out
+
+Assembling Machine 2
+    Red Splitter
+    Inputs
+        Green Circuit: circuits
+        Iron Gear Wheel: gears
+        Yellow Splitter: yellow_splitters
+    Outputs
+        Red Splitter: splitters_out

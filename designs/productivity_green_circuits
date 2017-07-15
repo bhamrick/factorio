@@ -1,0 +1,26 @@
+Inputs
+    Iron Plate: iron_in
+    Copper Plate: copper_in
+Outputs
+    Green Circuit: green_circuits
+Targets
+    green_circuits: 40.0
+    
+Assembling Machine 3
+    Copper Wire
+    Modules
+        Productivity 3: 4
+    Inputs
+        Copper Plate: copper_in
+    Outputs
+        Copper Wire: wires
+
+Assembling Machine 3
+    Green Circuit
+    Modules
+        Productivity 3: 4
+    Inputs
+        Iron Plate: iron_in
+        Copper Wire: wires
+    Outputs
+        Green Circuit: green_circuits

@@ -1,0 +1,116 @@
+Inputs
+    Coal: coal_in
+    Iron Plate: iron_in
+    Copper Plate: copper_in
+    Crude Oil: crude_in
+    Water: water_in
+Outputs
+    Blue Circuit: blue_circuits
+
+Targets
+    # blue_circuits: 1.0
+    blue_circuits: 0.40824001859
+
+Assembling Machine 2
+    Copper Cable
+    Modules
+        Productivity 1: 2
+    Inputs
+        Copper Plate: copper_in
+    Outputs
+        Copper Cable: wires
+
+Assembling Machine 2
+    Green Circuit
+    Modules
+        Productivity 1: 2
+    Inputs
+        Copper Cable: wires
+        Iron Plate: iron_in
+    Outputs
+        Green Circuit: greens
+
+Oil Refinery
+    Advanced Oil Processing
+    Modules
+        Speed 1: 3
+    Inputs
+        Water: water_in
+        Crude Oil: crude_in
+    Outputs
+        Heavy Oil: heavy
+        Light Oil: light
+        Petroleum: petroleum
+
+Chemical Plant
+    Heavy Oil Cracking
+    Modules
+        Productivity 1: 3
+    Inputs
+        Water: water_in
+        Heavy Oil: heavy
+    Outputs
+        Light Oil: light
+
+Chemical Plant
+    Light Oil Cracking
+    Modules
+        Productivity 1: 3
+    Inputs
+        Water: water_in
+        Light Oil: light
+    Outputs
+        Petroleum: petroleum
+
+Chemical Plant
+    Sulfur
+    Modules
+        Productivity 1: 3
+    Inputs
+        Water: water_in
+        Petroleum: petroleum
+    Outputs
+        Sulfur: sulfur
+
+Chemical Plant
+    Plastic Bar
+    Modules
+        Productivity 1: 3
+    Inputs
+        Coal: coal_in
+        Petroleum: petroleum
+    Outputs
+        Plastic Bar: plastic
+
+Chemical Plant
+    Sulfuric Acid
+    Modules
+        Productivity 1: 3
+    Inputs
+        Sulfur: sulfur
+        Iron Plate: iron_in
+        Water: water_in
+    Outputs
+        Sulfuric Acid: acid
+
+Assembling Machine 2
+    Red Circuit
+    Modules
+        Productivity 1: 2
+    Inputs
+        Green Circuit: greens
+        Plastic Bar: plastic
+        Copper Cable: wires
+    Outputs
+        Red Circuit: reds
+
+Assembling Machine 2
+    Blue Circuit
+    Modules
+        Productivity 1: 2
+    Inputs
+        Green Circuit: greens
+        Red Circuit: reds
+        Sulfuric Acid: acid
+    Outputs
+        Blue Circuit: blue_circuits
