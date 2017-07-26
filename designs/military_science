@@ -6,7 +6,7 @@ Inputs
 Outputs
     Military Science: science_out
 Targets
-    science_out: 1.0
+    science_out: 0.75
 
 Assembling Machine 2
     Grenade
@@ -18,8 +18,6 @@ Assembling Machine 2
 
 Assembling Machine 2
     Iron Gear Wheel
-    Modules
-        Productivity 1: 3
     Inputs
         Iron Plate: iron_in
     Outputs
@@ -52,8 +50,6 @@ Assembling Machine 2
 
 Assembling Machine 2
     Military Science
-    Modules
-        Productivity 1: 3
     Inputs
         Grenade: grenades
         Gun Turret: turrets

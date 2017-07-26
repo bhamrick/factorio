@@ -9,7 +9,7 @@ Targets
 Assembling Machine 2
     Copper Cable
     Modules
-        Productivity 1: 3
+        Productivity 1: 2
     Inputs
         Copper Plate: copper_in
     Outputs
@@ -18,7 +18,7 @@ Assembling Machine 2
 Assembling Machine 2
     Electronic Circuit
     Modules
-        Productivity 1: 3
+        Productivity 1: 2
     Inputs
         Copper Cable: copper_wires
         Iron Plate: iron_in

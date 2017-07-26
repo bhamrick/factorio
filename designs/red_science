@@ -8,6 +8,8 @@ Targets
 
 Assembling Machine 2
     Iron Gear Wheel
+    Modules
+        Productivity 1: 2
     Inputs
         Iron Plate: iron_in
     Outputs
@@ -15,6 +17,8 @@ Assembling Machine 2
 
 Assembling Machine 2
     Red Science
+    Modules
+        Productivity 1: 2
     Inputs
         Copper Plate: copper_in
         Iron Gear Wheel: gears

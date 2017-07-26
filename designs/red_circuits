@@ -1,0 +1,25 @@
+Inputs
+    Green Circuit: green_in
+    Copper Plate: copper_in
+    Plastic Bar: plastic_in
+Outputs
+    Red Circuit: red_out
+
+Targets
+    red_out: 13.333333334
+
+Assembling Machine 2
+    Copper Cable
+    Inputs
+        Copper Plate: copper_in
+    Outputs
+        Copper Cable: wires
+
+Assembling Machine 2
+    Red Circuit
+    Inputs
+        Green Circuit: green_in
+        Copper Cable: wires
+        Plastic Bar: plastic_in
+    Outputs
+        Red Circuit: red_out

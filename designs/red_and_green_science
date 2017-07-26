@@ -2,14 +2,14 @@ Inputs
     Iron Plate: iron_in
     Copper Plate: copper_in
 Outputs
-    Green Science: science_out
+    Red Science: red_out
+    Green Science: green_out
 Targets
-    science_out: 1.0
+    red_out: 0.75
+    green_out: 0.75
 
 Assembling Machine 2
     Iron Gear Wheel
-    Modules
-        Productivity 1: 2
     Inputs
         Iron Plate: iron_in
     Outputs
@@ -25,8 +25,6 @@ Assembling Machine 2
 
 Assembling Machine 2
     Copper Cable
-    Modules
-        Productivity 1: 2
     Inputs
         Copper Plate: copper_in
     Outputs
@@ -34,8 +32,6 @@ Assembling Machine 2
 
 Assembling Machine 2
     Green Circuit
-    Modules
-        Productivity 1: 2
     Inputs
         Copper Cable: copper_wires
         Iron Plate: iron_in
@@ -53,10 +49,16 @@ Assembling Machine 2
 
 Assembling Machine 2
     Green Science
-    Modules
-        Productivity 1: 2
     Inputs
         Transport Belt: belts
         Inserter: inserters
     Outputs
-        Green Science: science_out
+        Green Science: green_out 
+
+Assembling Machine 2
+    Red Science
+    Inputs
+        Copper Plate: copper_in
+        Iron Gear Wheel: gears
+    Outputs
+        Red Science: red_out

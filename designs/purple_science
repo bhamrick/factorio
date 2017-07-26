@@ -1,0 +1,45 @@
+Inputs
+    Electric Engine Unit: electric_engines_in
+    Stone Brick: bricks_in
+    Iron Plate: iron_in
+    Green Circuit: green_in
+    Red Circuit: red_in
+    Steel Plate: steel_in
+Outputs
+    Purple Science: purple_out
+Targets
+    purple_out: 0.75
+
+Assembling Machine 2
+    Iron Gear Wheel
+    Inputs
+        Iron Plate: iron_in
+    Outputs
+        Iron Gear Wheel: gears
+
+Assembling Machine 2
+    Assembling Machine 1
+    Inputs
+        Green Circuit: green_in
+        Iron Gear Wheel: gears
+        Iron Plate: iron_in
+    Outputs
+        Assembling Machine 1: assembling_machines
+
+Assembling Machine 2
+    Electric Furnace
+    Inputs
+        Steel Plate: steel_in
+        Red Circuit: red_in
+        Stone Brick: bricks_in
+    Outputs
+        Electric Furnace: furnaces
+
+Assembling Machine 2
+    Purple Science
+    Inputs
+        Electric Engine Unit: electric_engines_in
+        Assembling Machine 1: assembling_machines
+        Electric Furnace: furnaces
+    Outputs
+        Purple Science: purple_out

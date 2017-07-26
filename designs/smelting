@@ -1,0 +1,17 @@
+# Basic Smelting Setups
+
+Inputs
+    Iron Ore: iron_in
+Outputs
+    Iron Plate: iron_out
+Targets
+    iron_out: 13.33333
+
+Electric Furnace
+    Iron Plate
+    Modules
+        Efficiency 1: 2
+    Inputs
+        Iron Ore: iron_in
+    Outputs
+        Iron Plate: iron_out

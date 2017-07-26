@@ -617,6 +617,11 @@ lazy_static! {
             energy_consumption: 0.0,
             crafting_speed: 1.0,
         },
+        ProtoBuilding {
+            name: "Electric Furnace",
+            energy_consumption: 180.0,
+            crafting_speed: 2.0,
+        },
     ];
 
     static ref PROTO_RECIPES : Vec<ProtoRecipe<'static>> = vec![
@@ -740,7 +745,53 @@ lazy_static! {
             ],
             time: 0.5,
         },
-        // TODO: Smelting recipes
+        ProtoRecipe {
+            name: "Iron Plate",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::IronOre, 1.0),
+            ],
+            outputs: vec![
+                (Resource::IronPlate, 1.0),
+            ],
+            time: 3.5,
+        },
+        ProtoRecipe {
+            name: "Copper Plate",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::CopperOre, 1.0),
+            ],
+            outputs: vec![
+                (Resource::CopperPlate, 1.0),
+            ],
+            time: 3.5,
+        },
+        ProtoRecipe {
+            name: "Stone Brick",
+            aliases: vec![
+                "Brick",
+            ],
+            inputs: vec![
+                (Resource::Stone, 2.0),
+            ],
+            outputs: vec![
+                (Resource::StoneBrick, 1.0),
+            ],
+            time: 3.5,
+        },
+        ProtoRecipe {
+            name: "Steel Plate",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::IronPlate, 5.0),
+            ],
+            outputs: vec![
+                (Resource::SteelPlate, 1.0),
+            ],
+            time: 17.5,
+        },
+        // TODO: Smelting recipes with fuel
         ProtoRecipe {
             name: "Sulfur",
             aliases: vec![],
