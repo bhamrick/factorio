@@ -575,56 +575,78 @@ lazy_static! {
         ProtoBuilding {
             name: "Assembling Machine 1",
             energy_consumption: 90.0,
+            drain: 3.0,
             crafting_speed: 0.5,
         },
         ProtoBuilding {
             name: "Assembling Machine 2",
             energy_consumption: 150.0,
+            drain: 5.0,
             crafting_speed: 0.75,
         },
         ProtoBuilding {
             name: "Assembling Machine 3",
             energy_consumption: 210.0,
+            drain: 7.0,
             crafting_speed: 1.25,
         },
         ProtoBuilding {
             name: "Boiler",
             energy_consumption: 0.0,
+            drain: 0.0,
             crafting_speed: 1.0,
         },
         ProtoBuilding {
             name: "Chemical Plant",
             energy_consumption: 210.0,
+            drain: 7.0,
             crafting_speed: 1.25,
         },
         ProtoBuilding {
             name: "Oil Refinery",
             energy_consumption: 420.0,
+            drain: 14.0,
             crafting_speed: 1.0,
         },
         ProtoBuilding {
             name: "Rocket Silo",
             energy_consumption: 4000.0,
+            drain: 0.0,
             crafting_speed: 1.0,
         },
         ProtoBuilding {
             name: "Centrifuge",
             energy_consumption: 350.0,
+            drain: 11.6,
             crafting_speed: 0.75,
         },
         ProtoBuilding {
             name: "Nuclear Reactor",
             energy_consumption: 0.0,
+            drain: 0.0,
             crafting_speed: 1.0,
         },
         ProtoBuilding {
             name: "Electric Furnace",
             energy_consumption: 180.0,
+            drain: 6.0,
             crafting_speed: 2.0,
         },
     ];
 
     static ref PROTO_RECIPES : Vec<ProtoRecipe<'static>> = vec![
+        ProtoRecipe {
+            name: "Boiling (Coal)",
+            aliases: vec![],
+            inputs: vec![
+                (Resource::Water, 60.0),
+                (Resource::Coal, 0.45),
+            ],
+            outputs: vec![
+                (Resource::Steam, 60.0),
+            ],
+            time: 1.0,
+        },
         ProtoRecipe {
             name: "Boiling (Solid Fuel)",
             aliases: vec![],
@@ -3260,6 +3282,7 @@ struct Building<'a> {
     name: &'a str,
     recipe: Recipe<'a>,
     energy_consumption: f32,
+    drain: f32,
     crafting_speed: f32,
     modules: Vec<(Module, i16)>,
     index: usize,
@@ -3318,7 +3341,7 @@ impl<'a> Building<'a> {
         if modifiers.energy < 0.2 {
             modifiers.energy = 0.2;
         }
-        self.energy_consumption * modifiers.energy
+        self.energy_consumption * modifiers.energy + self.drain
     }
 }
 
@@ -3426,6 +3449,7 @@ impl Modifiers {
 struct ProtoBuilding<'a> {
     name: &'a str,
     energy_consumption: f32,
+    drain: f32,
     crafting_speed: f32,
 }
 
@@ -3697,6 +3721,7 @@ impl<'a> Design<'a> {
                     name: proto_building.name,
                     recipe: recipe,
                     energy_consumption: proto_building.energy_consumption,
+                    drain: proto_building.drain,
                     crafting_speed: proto_building.crafting_speed,
                     modules: modules,
                     index: building_index,

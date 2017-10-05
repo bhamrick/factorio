@@ -51,8 +51,8 @@ Chemical Plant
 Chemical Plant
     Solid fuel (Petroleum)
     Modules
-        Productivity 1: 2
-        Efficiency 1: 1
+        Productivity 1: 1
+        Efficiency 1: 2
     Inputs
         Petroleum: petroleum
     Outputs

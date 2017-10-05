@@ -5,8 +5,8 @@ Outputs
     Red Science: red_out
     Green Science: green_out
 Targets
-    red_out: 0.75
-    green_out: 0.75
+    red_out: 1.5
+    green_out: 1.5
 
 Assembling Machine 2
     Iron Gear Wheel
