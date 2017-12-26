@@ -1060,7 +1060,6 @@ lazy_static! {
                 "Purple Science",
             ],
             inputs: vec![
-                (Resource::AssemblingMachine1, 1.0),
                 (Resource::ElectricEngineUnit, 1.0),
                 (Resource::ElectricFurnace, 1.0),
             ],
